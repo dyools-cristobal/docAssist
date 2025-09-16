@@ -1,0 +1,19 @@
+<div class="center">
+    <mat-card class="pad">
+      <img src="assets/images/doc-login.png" alt="DocAssist" class="doc-image">
+      <img src="assets/images/doc-assist-logo.png" alt="DocAssist Logo" class="logo">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Username/Email</mat-label>
+          <input matInput formControlName="email" type="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" type="password">
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" class="full" [disabled]="form.invalid">Sign In</button>
+      </form>
+    </mat-card>
+  </div>

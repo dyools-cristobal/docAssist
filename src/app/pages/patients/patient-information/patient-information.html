@@ -1,0 +1,273 @@
+<div class="container">
+  <div class="row">
+    <div class="patient-header">
+      <img class="patient-photo" src="#" alt="" />
+      <div class="patient-info">
+        <div class="patient-name">{{ patient?.firstName }} {{ patient?.lastName }}</div>
+      </div>
+    </div>
+  </div>
+  @if(isEditing) {
+  <form class="patient-form" [formGroup]="form" (ngSubmit)="save()">
+    <div class="save-button">
+      @if(isEditing) {
+      <button mat-raised-button color="primary" type="submit">Save</button>
+      <button mat-raised-button class="cancel-btn" (click)="enableEditing()">Cancel</button>
+      }
+    </div>
+
+    <!-- Physical Info -->
+    <mat-expansion-panel expanded>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Physical Information</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" />
+          <mat-error *ngIf="form.get('firstName')?.hasError('required')"
+            >First name is required</mat-error
+          >
+          <mat-error *ngIf="form.get('firstName')?.hasError('minlength')"
+            >Minimum 2 characters</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Middle Name (Optional)</mat-label>
+          <input matInput formControlName="middleName" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" />
+          <mat-error *ngIf="form.get('lastName')?.hasError('required')"
+            >Last name is required</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Date of Birth</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dob" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.get('dob')?.hasError('required')"
+            >Date of birth is required</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Time of Birth</mat-label>
+          <input matInput type="time" formControlName="timeOfBirth" />
+          <mat-error *ngIf="form.get('timeOfBirth')?.hasError('required')"
+            >Time of birth is required</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Gender</mat-label>
+          <mat-select formControlName="gender">
+            <mat-option value="male">Male</mat-option>
+            <mat-option value="female">Female</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('gender')?.hasError('required')">Gender is required</mat-error>
+        </mat-form-field>
+
+        <div class="form-grid-inner">
+          <mat-form-field appearance="outline">
+            <mat-label>Birth Weight (lbs)</mat-label>
+            <input matInput type="number" formControlName="birthWeight" />
+            <mat-error *ngIf="form.get('birthWeight')?.hasError('required')"
+              >Birth weight is required</mat-error
+            >
+            <mat-error *ngIf="form.get('birthWeight')?.hasError('min')">Too low</mat-error>
+            <mat-error *ngIf="form.get('birthWeight')?.hasError('max')">Too high</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Birth Length (cm)</mat-label>
+            <input matInput type="number" formControlName="birthLength" />
+            <mat-error *ngIf="form.get('birthLength')?.hasError('required')"
+              >Birth lenght is required</mat-error
+            >
+            <mat-error *ngIf="form.get('birthLength')?.hasError('min')">Too low</mat-error>
+            <mat-error *ngIf="form.get('birthLength')?.hasError('max')">Too high</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Age of Gestation</mat-label>
+            <input matInput type="number" formControlName="gestationAge" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Head Circ</mat-label>
+            <input matInput type="number" formControlName="headCirc" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Chest Circ</mat-label>
+            <input matInput type="number" formControlName="chestCirc" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Abdomen Circ</mat-label>
+            <input matInput type="number" formControlName="abdomenCirc" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Newborn Screening</mat-label>
+            <input matInput type="string" formControlName="newbornScreening" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Blood Type</mat-label>
+            <mat-select formControlName="bloodType">
+              <mat-option value="A+">A+</mat-option>
+              <mat-option value="A-">A-</mat-option>
+              <mat-option value="B+">B+</mat-option>
+              <mat-option value="B-">B-</mat-option>
+              <mat-option value="AB+">AB+</mat-option>
+              <mat-option value="AB-">AB-</mat-option>
+              <mat-option value="O+">O+</mat-option>
+              <mat-option value="O-">O-</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline">
+  <mat-label>Allergies</mat-label>
+  <mat-select formControlName="allergies" multiple>
+    <mat-option value="Peanuts">Peanuts</mat-option>
+    <mat-option value="Tree Nuts">Tree Nuts</mat-option>
+    <mat-option value="Milk">Milk</mat-option>
+    <mat-option value="Eggs">Eggs</mat-option>
+    <mat-option value="Shellfish">Shellfish</mat-option>
+    <mat-option value="Fish">Fish</mat-option>
+    <mat-option value="Wheat">Wheat</mat-option>
+    <mat-option value="Soy">Soy</mat-option>
+    <mat-option value="Pollen">Pollen</mat-option>
+    <mat-option value="Dust">Dust</mat-option>
+    <mat-option value="Latex">Latex</mat-option>
+    <mat-option value="Penicillin">Penicillin</mat-option>
+    <mat-option value="Aspirin">Aspirin</mat-option>
+    <mat-option value="Other">Other</mat-option>
+  </mat-select>
+</mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Perinatal History</mat-label>
+          <textarea matInput type="string" formControlName="perinatalHistory"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+    <!-- Mother -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Mother’s Information</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="motherName" />
+          @if(form.get('motherName')?.hasError('required')){
+          <mat-error>Required</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Occupation</mat-label>
+          <input matInput formControlName="motherOccupation" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Contact Number</mat-label>
+          <input matInput formControlName="motherContact" />
+          @if(form.get('motherContact')?.hasError('pattern')) {
+          <mat-error>Invalid phone number</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="motherEmail" />
+          @if(form.get('motherEmail')?.hasError('email')){
+          <mat-error>Invalid email</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+
+    <!-- Father -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Father’s Information</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="fatherName" />
+          @if(form.get('fatherName')?.hasError('required')){
+          <mat-error>Required</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Occupation</mat-label>
+          <input matInput formControlName="fatherOccupation" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Contact Number</mat-label>
+          <input matInput formControlName="fatherContact" />
+          @if(form.get('fatherContact')?.hasError('pattern')){
+          <mat-error>Invalid phone number</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="fatherEmail" />
+          @if(form.get('fatherEmail')?.hasError('email')){
+          <mat-error>Invalid email</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+
+    <!-- Home -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Home Information</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="form-grid">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Address</mat-label>
+          <textarea matInput rows="2" formControlName="address"></textarea>
+          @if(form.get('address')?.hasError('required')){
+          <mat-error>Address is required</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+  </form>
+  } @if(!isEditing) {
+  <div class="save-button">
+    <button mat-raised-button color="primary" (click)="enableEditing()">Edit</button>
+  </div>
+  } @if(!isEditing) {
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Physical Information</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.firstName }} {{ patient?.middleName }} {{ patient?.lastName }}
+        </div>
+        <div matListItemLine>Name</div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.dob?.seconds * 1000 | date : 'MMMM d, y' }} at {{ patient?.tob }}
+        </div>
+        <div matListItemLine>Date of Birth</div>
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+  }
+</div>

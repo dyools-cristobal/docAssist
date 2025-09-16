@@ -1,0 +1,96 @@
+.container {
+    display:grid;
+    align-items: center;
+    max-width: 600px;
+    margin: auto;
+    .row {
+        display: grid;
+        flex: 1;
+        max-width: 560px;
+        .link {
+            padding: 40px;
+            margin: 5px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 12px;
+            background-color: rgb(233, 134, 150);
+            flex: 1;
+            &:hover{
+                background-color: pink;
+            }
+        }
+        .patient-header {
+            display: flex;
+            .patient-photo{
+                margin: 10px;
+                height: 100px;
+                width: 100px;
+                border-radius: 50%;
+                background-color: lightgray;
+            }
+            .patient-info{
+                text-align: left;
+                .patient-name {
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin-top: 24px;
+                }
+                .patient-phone {
+                    display: flex;
+                    font-size: 14px;
+                    color: gray;
+                    margin-top: 8px;
+                    align-items: center;    
+                    gap: 10px;
+                }
+                .patient-email {
+                    display: flex;
+                    font-size: 14px;
+                    color: gray;
+                    margin-top: 8px;
+                    align-items: center;    
+                    gap: 10px;
+                }
+            }
+        }
+    }
+}
+
+.patient-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.save-button {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 1px 0 16px 0;
+  button {
+    width: 100%;
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit);
+  gap: 16px;
+  &-inner {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+.full-width {
+  grid-column: span 2; /* let textarea take full width on larger screens */
+}
+
+
+
+.cancel-btn {
+  background-color: #d35b5b; /* Gray, or any color you want */
+  color: #fff; /* Text color */
+}

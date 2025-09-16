@@ -1,0 +1,32 @@
+@use '@angular/material/theming' as mat;
+
+// 1. Include the core styles
+@include mat.core();
+
+// 2. Define your color palettes (using built-in palettes as base)
+$docassist-primary: mat.define-palette(mat.$pink-palette, 200);
+$docassist-accent: mat.define-palette(mat.$blue-grey-palette, 700);
+
+// 3. Create the theme
+$docassist-theme: mat.define-light-theme((
+  color: (
+    primary: $docassist-primary,
+    accent: $docassist-accent,
+  ),
+));
+
+// 4. Apply the theme
+@include mat.all-component-themes($docassist-theme);
+
+// 5. Custom button radius
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-flat-button {
+  border-radius: 4px !important;
+}
+
+// 6. Default text color
+body {
+  color: #191919;
+}

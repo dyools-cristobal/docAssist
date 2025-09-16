@@ -1,0 +1,31 @@
+.center {
+    display: grid;
+    place-items: center;
+    height: calc(100vh - 164px);
+    padding: 16px
+}
+
+mat-card {
+    display: grid;
+    place-items: center;
+    max-width: 380px;
+    width: 100%;
+    background-color: white;
+    padding: 24px;
+}
+
+.full {
+    width: 100%
+}
+
+.doc-image {
+    max-width: 200px;
+    height: auto;
+}
+
+.logo {
+    max-width: 250px;
+    height: auto;
+    margin-top: -24px;
+    margin-bottom: 36px;
+}

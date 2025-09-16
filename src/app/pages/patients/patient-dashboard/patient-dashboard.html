@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row">
+        <div class="patient-header">
+            <img class="patient-photo" src="#" alt="">
+            <div class="patient-info">
+                <div class="patient-name">
+                    {{ patient?.firstName }} {{ patient?.lastName }}</div>
+                <div class="patient-phone">
+                    <mat-icon class="icon">phone</mat-icon>
+                    <span>{{ patient?.phoneNumber }}</span>
+                </div>
+                <div class="patient-email">
+                    <mat-icon class="icon">email</mat-icon>
+                    <span>{{ patient?.email }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="link" (click)="goToInfo()">Info</div>
+        <div class="link" (click)="goToCalendar()">Calendar</div>
+    </div>
+    <div class="row">
+        <div class="link" (click)="goToGrowth()">Growth</div>
+        <div class="link" (click)="goToHistory()">History</div>
+    </div>
+</div>

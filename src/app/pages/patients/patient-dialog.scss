@@ -1,0 +1,12 @@
+.container {
+    width: 300px;
+    padding: 24px;
+}
+.dialog-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    .full-width {
+    flex: 1;
+}
+}

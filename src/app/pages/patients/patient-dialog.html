@@ -1,0 +1,43 @@
+<div class="container">
+  <h2 mat-dialog-title>{{ data?.patient ? 'Edit Patient' : 'Add Patient' }}</h2>
+  <form [formGroup]="form" (ngSubmit)="save()" class="dialog-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" />
+    </mat-form-field>
+
+    <!-- Date of Birth -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dob" />
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Time of Birth -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Time of Birth</mat-label>
+      <input matInput type="time" formControlName="tob" />
+    </mat-form-field>
+
+    <!-- Gender -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Gender</mat-label>
+      <mat-select formControlName="gender">
+        <mat-option value="female">Female</mat-option>
+        <mat-option value="male">Male</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div mat-dialog-actions align="end">
+      <button mat-button type="button" (click)="close()">Cancel</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
+        {{ data?.patient ? 'Update' : 'Add' }}
+      </button>
+    </div>
+  </form>
+</div>
