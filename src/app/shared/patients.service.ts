@@ -1,5 +1,14 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, collectionData, addDoc, deleteDoc, doc, updateDoc, docData, getDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
+  docData,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 export interface Patient {
@@ -7,7 +16,7 @@ export interface Patient {
   firstName: string;
   middleName: string;
   lastName: string;
-  dob: any; 
+  dob: any;
   tob: any;
   gender: string;
   headCirc: number;
@@ -23,21 +32,22 @@ export interface Patient {
   perinatalHistory: string;
   complications: string;
   allergies: string;
+  newbornScreening: string;
   growthCharts: string;
   notes: string;
-  
-    motherName: string; 
-    motherContact: string; 
-    motherEmail: string;
-    motherdob: any;
-    motherOccupation: string; 
-  
-    fatherName: string; 
-    fatherContact: string; 
-    fatherEmail: string;
-    fatherdob: any;
-    fatherOccupation: string; 
-  emergencyContact: { name: string; relation: string; contact: string; };
+
+  motherName: string;
+  motherContact: string;
+  motherEmail: string;
+  motherdob: any;
+  motherOccupation: string;
+
+  fatherName: string;
+  fatherContact: string;
+  fatherEmail: string;
+  fatherdob: any;
+  fatherOccupation: string;
+  emergencyContact: { name: string; relation: string; contact: string };
   homeAddress: string;
   email: string;
   createdAt: Date;
@@ -46,11 +56,9 @@ export interface Patient {
 
 @Injectable({ providedIn: 'root' })
 export class PatientsService {
-  private fs = inject(Firestore);
-  private patientsCol = collection(this.fs, 'patients');
-  private patients: Patient[] = [];
+  private firestore: Firestore = inject(Firestore); // ✅ inject once
+  private patientsCol = collection(this.firestore, 'patients');
 
-  constructor(private firestore: Firestore) {}
   // Get all patients
   list(): Observable<Patient[]> {
     return collectionData(this.patientsCol, { idField: 'id' }) as Observable<Patient[]>;
@@ -63,21 +71,19 @@ export class PatientsService {
 
   // Update an existing patient
   update(id: string, patient: Partial<Patient>) {
-    const patientRef = doc(this.fs, 'patients', id);
+    const patientRef = doc(this.firestore, 'patients', id);
     return updateDoc(patientRef, { ...patient });
   }
 
   // Remove a patient
   remove(id: string) {
-    const patientRef = doc(this.fs, 'patients', id);
+    const patientRef = doc(this.firestore, 'patients', id);
     return deleteDoc(patientRef);
   }
 
-
-
+  // Get patient by ID
   getPatientById(id: string): Observable<Patient | undefined> {
     const ref = doc(this.firestore, `patients/${id}`);
-    // docData returns an Observable of the doc data; { idField: 'id' } injects the doc.id into the result
     return docData(ref, { idField: 'id' }) as Observable<Patient | undefined>;
   }
 }

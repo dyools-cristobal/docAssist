@@ -11,8 +11,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import {MatListModule } from '@angular/material/list';  
+import { MatListModule } from '@angular/material/list';  
 import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-patient-information',
@@ -31,7 +32,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatButtonModule,
     MatInputModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule, 
+    MatChipsModule
   ],
   standalone: true,
   templateUrl: './patient-information.html',
@@ -98,7 +100,7 @@ export class PatientInformation {
         bloodType: this.patient.bloodType || '',
         allergies: this.patient.allergies || [],
         perinatalHistory: this.patient.perinatalHistory || '',
-
+        newbordScreening: this.patient.newbornScreening || '',
         // Mother
 
         motherName: this.patient.motherName || null,

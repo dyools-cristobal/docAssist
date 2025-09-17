@@ -130,24 +130,24 @@
           </mat-form-field>
         </div>
         <mat-form-field appearance="outline">
-  <mat-label>Allergies</mat-label>
-  <mat-select formControlName="allergies" multiple>
-    <mat-option value="Peanuts">Peanuts</mat-option>
-    <mat-option value="Tree Nuts">Tree Nuts</mat-option>
-    <mat-option value="Milk">Milk</mat-option>
-    <mat-option value="Eggs">Eggs</mat-option>
-    <mat-option value="Shellfish">Shellfish</mat-option>
-    <mat-option value="Fish">Fish</mat-option>
-    <mat-option value="Wheat">Wheat</mat-option>
-    <mat-option value="Soy">Soy</mat-option>
-    <mat-option value="Pollen">Pollen</mat-option>
-    <mat-option value="Dust">Dust</mat-option>
-    <mat-option value="Latex">Latex</mat-option>
-    <mat-option value="Penicillin">Penicillin</mat-option>
-    <mat-option value="Aspirin">Aspirin</mat-option>
-    <mat-option value="Other">Other</mat-option>
-  </mat-select>
-</mat-form-field>
+          <mat-label>Allergies</mat-label>
+          <mat-select formControlName="allergies" multiple>
+            <mat-option value="Peanuts">Peanuts</mat-option>
+            <mat-option value="Tree Nuts">Tree Nuts</mat-option>
+            <mat-option value="Milk">Milk</mat-option>
+            <mat-option value="Eggs">Eggs</mat-option>
+            <mat-option value="Shellfish">Shellfish</mat-option>
+            <mat-option value="Fish">Fish</mat-option>
+            <mat-option value="Wheat">Wheat</mat-option>
+            <mat-option value="Soy">Soy</mat-option>
+            <mat-option value="Pollen">Pollen</mat-option>
+            <mat-option value="Dust">Dust</mat-option>
+            <mat-option value="Latex">Latex</mat-option>
+            <mat-option value="Penicillin">Penicillin</mat-option>
+            <mat-option value="Aspirin">Aspirin</mat-option>
+            <mat-option value="Other">Other</mat-option>
+          </mat-select>
+        </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Perinatal History</mat-label>
@@ -244,7 +244,9 @@
       </div>
     </mat-expansion-panel>
   </form>
-  } @if(!isEditing) {
+  } 
+  <div class="display-information">
+  @if(!isEditing) {
   <div class="save-button">
     <button mat-raised-button color="primary" (click)="enableEditing()">Edit</button>
   </div>
@@ -256,18 +258,171 @@
     <mat-list>
       <mat-list-item>
         <div matListItemTitle>
-          {{ patient?.firstName }} {{ patient?.middleName }} {{ patient?.lastName }}
-        </div>
-        <div matListItemLine>Name</div>
-      </mat-list-item>
-
-      <mat-list-item>
-        <div matListItemTitle>
           {{ patient?.dob?.seconds * 1000 | date : 'MMMM d, y' }} at {{ patient?.tob }}
         </div>
         <div matListItemLine>Date of Birth</div>
       </mat-list-item>
+
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.gender }}
+        </div>
+        <div matListItemLine>Gender</div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.gestationAge }}
+        </div>
+        <div matListItemLine>Age of Gestation</div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.birthWeight }}
+        </div>
+        <div matListItemLine>Birth Weight (lbs)</div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.birthLength }}
+        </div>
+        <div matListItemLine>Birth Length (cm)</div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.headCirc }}
+        </div>
+        <div matListItemLine>Head Circumference (cm)</div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.chestCirc }}
+        </div>
+        <div matListItemLine>Chest Circumference (cm)</div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.abdomenCirc }}
+        </div>
+        <div matListItemLine>Abdomen Circumference (cm)</div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.bloodType }}
+        </div>
+        <div matListItemLine>Blood Type</div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.allergies }}
+        </div>
+        <div matListItemLine>Allergies</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.perinatalHistory }}
+        </div>
+        <div matListItemLine>Perinatal History</div>
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel >
+    <mat-expansion-panel-header>
+      <mat-panel-title>Mother's Information</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.motherName }}
+        </div>
+        <div matListItemLine>Name</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.motherdob?.seconds * 1000 | date : 'MMMM d, y' }}
+        </div>
+        <div matListItemLine>Date of Birth</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.motherOccupation }}
+        </div>
+        <div matListItemLine>Occupation</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.motherContact }}
+        </div>
+        <div matListItemLine>Contact Information</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.motherEmail }}
+        </div>
+        <div matListItemLine>Email</div>
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel >
+    <mat-expansion-panel-header>
+      <mat-panel-title>Father's Information</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.fatherName }}
+        </div>
+        <div matListItemLine>Name</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.fatherdob?.seconds * 1000 | date : 'MMMM d, y' }}
+        </div>
+        <div matListItemLine>Date of Birth</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.fatherOccupation }}
+        </div>
+        <div matListItemLine>Occupation</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.fatherContact }}
+        </div>
+        <div matListItemLine>Contact Information</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.fatherEmail }}
+        </div>
+        <div matListItemLine>Email</div>
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel >
+    <mat-expansion-panel-header>
+      <mat-panel-title>Home Information</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.address }}
+        </div>
+        <div matListItemLine>Address</div>
+      </mat-list-item>
     </mat-list>
   </mat-expansion-panel>
   }
+  </div>
 </div>

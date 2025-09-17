@@ -14,6 +14,7 @@ import { MatSort } from '@angular/material/sort';
 import { ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { ConfirmDialog, ConfirmDialogData } from '../../shared/confirm-dialog/confirm-dialog';
 
 @Component({
   standalone: true,
@@ -64,7 +65,28 @@ ngAfterViewInit() {
     }
   });
 }
-  remove(id: string) { this.svc.remove(id); }
+  
+remove(id: string) { this.svc.remove(id); }
+
+openConfirmDialog(id: string) {
+  const dialogRef = this.dialog.open(ConfirmDialog, {
+    width: '350px',
+    data: {
+      title: 'Delete Patient',
+      message: 'Are you sure you want to delete this patient?',
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      patientID: id
+    } as ConfirmDialogData
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // user clicked confirm
+      this.remove(id);
+    }
+  });
+}
 
   filteredPatients() {
     const term = this.searchTerm.toLowerCase();
