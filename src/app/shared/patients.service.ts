@@ -8,11 +8,15 @@ import {
   doc,
   updateDoc,
   docData,
+  query,
+  where,
 } from '@angular/fire/firestore';
+import { Auth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 
 export interface Patient {
   id?: string;
+  doctorId: string;
   firstName: string;
   middleName: string;
   lastName: string;
@@ -56,32 +60,45 @@ export interface Patient {
 
 @Injectable({ providedIn: 'root' })
 export class PatientsService {
-  private firestore: Firestore = inject(Firestore); // ✅ inject once
+  private firestore = inject(Firestore);
+  private auth = inject(Auth);
   private patientsCol = collection(this.firestore, 'patients');
 
-  // Get all patients
+  // 🔹 Get all patients for the current logged-in doctor
   list(): Observable<Patient[]> {
-    return collectionData(this.patientsCol, { idField: 'id' }) as Observable<Patient[]>;
+    const user = this.auth.currentUser;
+    if (!user) throw new Error('No logged in user');
+
+    const q = query(this.patientsCol, where('doctorId', '==', user.uid));
+    return collectionData(q, { idField: 'id' }) as Observable<Patient[]>;
   }
 
-  // Add a new patient
-  add(patient: Patient) {
-    return addDoc(this.patientsCol, patient);
+  // 🔹 Add a new patient for the logged-in doctor
+  async add(patient: Omit<Patient, 'doctorId' | 'createdAt' | 'updatedAt'>) {
+    const user = this.auth.currentUser;
+    if (!user) throw new Error('No logged in user');
+
+    return addDoc(this.patientsCol, {
+      ...patient,
+      doctorId: user.uid,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
   }
 
-  // Update an existing patient
+  // 🔹 Update an existing patient
   update(id: string, patient: Partial<Patient>) {
     const patientRef = doc(this.firestore, 'patients', id);
-    return updateDoc(patientRef, { ...patient });
+    return updateDoc(patientRef, { ...patient, updatedAt: new Date() });
   }
 
-  // Remove a patient
+  // 🔹 Remove a patient
   remove(id: string) {
     const patientRef = doc(this.firestore, 'patients', id);
     return deleteDoc(patientRef);
   }
 
-  // Get patient by ID
+  // 🔹 Get patient by ID
   getPatientById(id: string): Observable<Patient | undefined> {
     const ref = doc(this.firestore, `patients/${id}`);
     return docData(ref, { idField: 'id' }) as Observable<Patient | undefined>;

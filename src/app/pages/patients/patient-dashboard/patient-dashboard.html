@@ -10,7 +10,7 @@
     </div>
     <div class="row">
         <div class="link" (click)="goToInfo()">Info</div>
-        <div class="link" (click)="goToCalendar()">Calendar</div>
+        <div class="link" (click)="patient && goToCalendar(patient)">Calendar</div>
     </div>
     <div class="row">
         <div class="link" (click)="goToGrowth()">Growth</div>

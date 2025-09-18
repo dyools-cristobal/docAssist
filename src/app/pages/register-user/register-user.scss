@@ -1,0 +1,13 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+
+  mat-card {
+    width: 400px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+}

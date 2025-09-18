@@ -1,1 +1,44 @@
-<p>patient-calendar works!</p>
+<div class="appointments-container">
+  <ng-container *ngIf="appointments$ | async as appointments; else noAppointments">
+    <div *ngFor="let appt of appointments" class="appt-card">
+      <div class="appt-date">{{ appt.date.toDate() | date : 'mediumDate' }} at {{ appt.time }}</div>
+      <div class="appt-type">{{ appt.type }}</div>
+      <div class="appt-details">{{ appt.details }}</div>
+
+      <!-- Actions -->
+      <div class="appt-actions">
+        <!-- ✅ Status check icon -->
+        <button
+          *ngIf="appt.status !== 'cancelled'"
+          mat-icon-button
+          (click)="cycleStatus(appt)"
+          [color]="getStatusColor(appt.status)"
+          [matTooltip]="getStatusTooltip(appt.status)"
+        >
+          <mat-icon
+            [ngClass]="{
+              'status-waiting': appt.status === 'waiting',
+              'status-progress': appt.status === 'in-progress',
+              'status-done': appt.status === 'done'
+            }"
+            >check_circle</mat-icon
+          >
+        </button>
+
+        <!-- ✏️ Edit icon -->
+        <button mat-icon-button (click)="editAppointment(appt)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noAppointments>
+    <p>No upcoming appointments</p>
+  </ng-template>
+</div>
+
+<!-- Floating Action Button -->
+<button mat-fab color="primary" class="fab" (click)="openDialog()">
+  <mat-icon>add</mat-icon>
+</button>

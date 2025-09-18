@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>New Appointment</h2>
+<form [formGroup]="form" (ngSubmit)="save()">
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Time</mat-label>
+      <input matInput type="time" formControlName="time" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="Checkup">Checkup</mat-option>
+        <mat-option value="Vaccination">Vaccination</mat-option>
+        <mat-option value="Consultation">Consultation</mat-option>
+        <mat-option value="Follow-up">Follow-up</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Details</mat-label>
+      <textarea matInput rows="3" formControlName="details"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="waiting">Waiting</mat-option>
+        <mat-option value="in-progress">In Progress</mat-option>
+        <mat-option value="done">Done</mat-option>
+        <mat-option value="cancelled">Cancelled</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="close()">Cancel</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">Save</button>
+  </mat-dialog-actions>
+</form>

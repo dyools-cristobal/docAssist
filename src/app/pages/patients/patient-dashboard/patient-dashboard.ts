@@ -40,8 +40,10 @@ export class PatientDashboard {
   goToGrowth() {
     this.router.navigate(['/patient-growth']);
   }
-  goToCalendar() {
-    this.router.navigate(['/patient-calendar']);
+  goToCalendar(patient: Patient) {
+    this.router.navigate(['/patient-calendar', patient.id],{
+      queryParams: { name: patient.firstName+' '+patient.lastName, gender: patient.gender }
+    });
   }
   goToHistory() {
     this.router.navigate(['/patient-history']);

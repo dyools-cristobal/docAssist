@@ -1,0 +1,22 @@
+<div *ngIf="appointments$ | async as appointments">
+  <h2>You have {{ appointments.length }} Appointments today</h2>
+
+  <div *ngFor="let appt of appointments" class="appt-card" [ngClass]="appt.patientGender === 'male' ? 'male-border' : 'female-border'">
+    <!-- Colored border based on gender -->
+  
+
+    <div class="appt-info">
+      <div class="appt-time">{{ formatTime24to12(appt.time) }}</div>
+      <div class="appt-name">{{ appt.patientName }}</div>
+      <div class="appt-type">{{ appt.type }}, {{ appt.details }}</div>
+    </div>
+    <mat-icon [ngClass]="{
+              'status-waiting': appt.status === 'waiting',
+              'status-progress': appt.status === 'in-progress',
+              'status-done': appt.status === 'done'
+            }">check_circle</mat-icon>
+    <button mat-icon-button (click)="goToPatient(appt.patientId)">
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </div>
+</div>

@@ -241,6 +241,11 @@
           <mat-error>Address is required</mat-error>
           }
         </mat-form-field>
+         <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Home Number</mat-label>
+          <input matInput formControlName="homeNumber" />
+        </mat-form-field>
+        
       </div>
     </mat-expansion-panel>
   </form>
@@ -251,7 +256,7 @@
     <button mat-raised-button color="primary" (click)="enableEditing()">Edit</button>
   </div>
   } @if(!isEditing) {
-  <mat-expansion-panel expanded>
+  <mat-expansion-panel expanded >
     <mat-expansion-panel-header>
       <mat-panel-title>Physical Information</mat-panel-title>
     </mat-expansion-panel-header>
@@ -420,6 +425,13 @@
           {{ patient?.address }}
         </div>
         <div matListItemLine>Address</div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <div matListItemTitle>
+          {{ patient?.homeNumber }}
+        </div>
+        <div matListItemLine>Home Number</div>
       </mat-list-item>
     </mat-list>
   </mat-expansion-panel>

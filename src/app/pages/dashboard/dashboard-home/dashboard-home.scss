@@ -1,0 +1,57 @@
+h2 {
+    margin: 24px;
+    font-weight: 300;
+}
+
+.appt-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  margin: 8px 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 12px;
+}
+
+.appt-border {
+  width: 6px;
+  height: 100%;
+}
+
+.female-border {
+  border-left: solid 15px #f28b82; // pinkish
+}
+
+.male-border {
+  border-left: solid 15px #3c6e71; // tealish
+}
+
+.appt-info {
+  flex: 1;
+}
+
+.appt-time {
+  font-weight: bold;
+}
+
+.appt-name {
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+.appt-type {
+  font-size: 12px;
+  color: #666;
+}
+
+.status-waiting {
+  color: gray;
+}
+.status-progress {
+  color: dodgerblue; // or amber
+}
+.status-done {
+  color: green; // ✅ looks much clearer
+}
+
