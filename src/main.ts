@@ -3,24 +3,27 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { importProvidersFrom } from '@angular/core';
+import { MatNativeDateModule } from '@angular/material/core';
+
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app';
 import { environment } from './environments/environment';
-import { importProvidersFrom } from '@angular/core';
-import { MatNativeDateModule } from '@angular/material/core';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
     provideAnimations(),
-    provideFirebaseApp(() => initializeApp(environment)),
+    importProvidersFrom(MatNativeDateModule),
+
+    // Firebase setup
+    provideFirebaseApp(() => initializeApp(environment)), // <-- fixed
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    importProvidersFrom(MatNativeDateModule)
   ],
 }).catch(err => console.error(err));
