@@ -1,19 +1,33 @@
 <div class="container">
-    <div class="row">
-        <div class="patient-header">
-            <img class="patient-photo" src="#" alt="">
-            <div class="patient-info">
-                <div class="patient-name">
-                    {{ patient?.firstName }} {{ patient?.lastName }}</div>
-            </div>
-        </div>
+  <div class="row">
+    <div class="patient-header">
+      <img class="patient-photo" src="#" alt="" />
+      <div class="patient-info">
+        <div class="patient-name">{{ patient?.firstName }} {{ patient?.lastName }}</div>
+        <div class="patient-dob">Age: {{ getAge(patient?.dob) }}</div>
+        <div class="patient-gender">Gender: {{ patient?.gender }}</div>
+      </div>
     </div>
-    <div class="row">
-        <div class="link" (click)="goToInfo()">Info</div>
-        <div class="link" (click)="patient && goToCalendar(patient)">Calendar</div>
-    </div>
-    <div class="row">
-        <div class="link" (click)="goToGrowth()">Growth</div>
-        <div class="link" (click)="goToHistory()">History</div>
-    </div>
+  </div>
+  
+  <div class="patient-allergies" *ngIf="patient?.allergies?.length">
+    <mat-icon>warning_outline</mat-icon>
+    <span 
+      >Allergies: {{ patient?.allergies }}</span
+    >
+    <ng-template #noAllergies>No known allergies</ng-template>
+  </div>
+
+  <mat-list>
+    <mat-list-item (click)="goToInfo()" class="menu-item">🧾 Information</mat-list-item>
+
+    <mat-list-item (click)="patient && goToCalendar(patient)" class="menu-item"
+      >📅 Appointments</mat-list-item
+    >
+
+    <mat-list-item (click)="goToGrowth()" class="menu-item">📈 Growth</mat-list-item>
+
+    <mat-list-item (click)="goToHistory()" class="menu-item">📂 History</mat-list-item>
+
+  </mat-list>
 </div>

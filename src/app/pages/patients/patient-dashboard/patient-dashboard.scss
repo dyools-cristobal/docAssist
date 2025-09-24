@@ -1,7 +1,6 @@
 .container {
     display:grid;
     align-items: center;
-    text-align: center;
     max-width: 600px;
     margin: auto;
     .row {
@@ -36,7 +35,7 @@
                     font-weight: bold;
                     margin-top: 24px;
                 }
-                .patient-phone {
+                .patient-dob {
                     display: flex;
                     font-size: 14px;
                     color: gray;
@@ -44,7 +43,8 @@
                     align-items: center;    
                     gap: 10px;
                 }
-                .patient-email {
+                .patient-gender {
+                    text-transform: capitalize;
                     display: flex;
                     font-size: 14px;
                     color: gray;
@@ -55,4 +55,29 @@
             }
         }
     }
+}
+mat-list-item {
+    font-size: 16px;
+    border-radius: 12px;
+    margin-top: 10px;
+    padding: 10px;
+    box-shadow: 2px 2px 2px #e0e0e0;
+}
+.menu-item:hover {
+    background-color: #cecbcb;
+    cursor:  pointer;
+}
+
+.patient-allergies {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #f3cfcf;
+    padding: 10px;
+    color: red;
+    border-radius: 12px;
+    box-shadow: 2px 2px 2px #e0e0e0;
 }

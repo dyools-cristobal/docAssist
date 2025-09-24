@@ -2,21 +2,21 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { PatientsService, Patient } from '../../../shared/patients.service';
-import { Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { DatePipe, NgIf } from '@angular/common';
 
 
 @Component({
   standalone: true,
   selector: 'app-patient-dashboard',
-  imports: [MatIconModule],
+  imports: [MatIconModule, MatListModule, DatePipe, NgIf],
   templateUrl: './patient-dashboard.html',
   styleUrl: './patient-dashboard.scss'
 })
 export class PatientDashboard {
   private route = inject(ActivatedRoute);
   private patientsService = inject(PatientsService);
-  private sub?: Subscription;
   patient?: Patient;
 
   constructor(
@@ -48,4 +48,21 @@ export class PatientDashboard {
   goToHistory() {
     this.router.navigate(['/patient-history']);
   }
+
+  getAge(dob: any): number {
+  if (!dob) return 0;
+  
+  const birthDate = dob.toDate ? dob.toDate() : new Date(dob); // handles Firestore Timestamp or Date
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age;
+}
+
 }
