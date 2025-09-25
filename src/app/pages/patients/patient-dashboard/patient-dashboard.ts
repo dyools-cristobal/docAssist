@@ -9,24 +9,87 @@ import { AppointmentService } from '../../../shared/appointment.service';
 import { ConfirmStartAppointment } from '../../../shared/confirm-start-appointment/confirm-start-appointment';
 import { MatButtonModule } from '@angular/material/button';
 import { AddPatientGrowth } from '../patient-growth/add-patient-growth/add-patient-growth';
+import { NgChartsModule } from 'ng2-charts';
+import { ChartData, ChartOptions } from 'chart.js';
+import { normalGrowthMale, normalGrowthFemale } from '../../../shared/constants/growth';
 
 @Component({
   standalone: true,
   selector: 'app-patient-dashboard',
-  imports: [MatIconModule, MatListModule, NgIf, MatButtonModule],
+  imports: [MatIconModule, MatListModule, NgIf, MatButtonModule, NgChartsModule],
   templateUrl: './patient-dashboard.html',
   styleUrl: './patient-dashboard.scss',
 })
 export class PatientDashboard implements OnInit {
   private route = inject(ActivatedRoute);
   private patientsService = inject(PatientsService);
-  private appointmentsService = inject(AppointmentService); // <--
+  private appointmentsService = inject(AppointmentService);
   private dialog = inject(MatDialog);
   private dialogOpened = false;
-  patient?: Patient | undefined;
 
+  patient?: Patient;
   appointmentID: string | null = '';
   patientID: string | null = '';
+  patientGrowth: any[] = [];
+
+  // Chart data
+  heightChartData!: ChartData<'line'>;
+  weightChartData!: ChartData<'line'>;
+
+  // Chart options
+  heightChartOptions: ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: { enabled: true },
+      zoom: {
+      pan: {
+        enabled: true,
+        mode: 'x', // or 'y' or 'xy'
+      },
+      zoom: {
+        wheel: {
+          enabled: true, // zoom with mouse wheel
+        },
+        pinch: {
+          enabled: true, // zoom with pinch on trackpad/touch
+        },
+        mode: 'x', // zoom along x axis (months)
+      },
+    },
+    },
+    scales: {
+      x: { title: { display: true, text: 'Months' } },
+      y: { title: { display: true, text: 'Height (cm)' }, beginAtZero: true },
+    },
+  };
+
+  weightChartOptions: ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: { enabled: true },
+      zoom: {
+      pan: {
+        enabled: true,
+        mode: 'x', // or 'y' or 'xy'
+      },
+      zoom: {
+        wheel: {
+          enabled: true, // zoom with mouse wheel
+        },
+        pinch: {
+          enabled: true, // zoom with pinch on trackpad/touch
+        },
+        mode: 'x', // zoom along x axis (months)
+      },
+    },
+    },
+    scales: {
+      x: { title: { display: true, text: 'Months' } },
+      y: { title: { display: true, text: 'Weight (kg)' }, beginAtZero: true },
+    },
+  };
 
   constructor(private router: Router) {}
 
@@ -39,13 +102,15 @@ export class PatientDashboard implements OnInit {
       return;
     }
 
-    this.patientsService.getPatientById(this.patientID).subscribe((p) => {
-      this.patient = p;
+    this.patientsService.getPatientById(this.patientID).then((result) => {
+      this.patient = result.patient;
+      this.patientGrowth = result.growth;
 
-      // show appointment dialog if coming from dashboard
-      if (this.appointmentID !== null && p && !this.dialogOpened) {
+      this.setupCharts();
+
+      if (this.appointmentID && result.patient && !this.dialogOpened) {
         this.dialogOpened = true;
-        this.openAppointmentDialog(this.appointmentID, p);
+        this.openAppointmentDialog(this.appointmentID, result.patient);
       }
     });
   }
@@ -58,7 +123,6 @@ export class PatientDashboard implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // doctor clicked Yes
         this.appointmentsService.updateStatus(appointmentID, 'in-progress').then(() => {
           console.log(`Appointment ${appointmentID} set to in-progress`);
         });
@@ -69,55 +133,100 @@ export class PatientDashboard implements OnInit {
   }
 
   startAppointment() {
-      if (this.appointmentID !== null && this.patient) {
-        this.openAppointmentDialog(this.appointmentID, this.patient);
-      }
-    ;
+    if (this.appointmentID && this.patient) {
+      this.openAppointmentDialog(this.appointmentID, this.patient);
+    }
   }
 
   goToInfo() {
     this.router.navigate(['/patient-information'], { state: { patient: this.patient } });
   }
-  
+
   addNewGrowthRecord() {
     const dialogRef = this.dialog.open(AddPatientGrowth, {
       data: { patientID: `${this.patientID}` },
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
-    if (result) {
-      // result should contain {height, weight, month}
-      if (this.patient && this.patient.id) {
+      if (result && this.patient?.id) {
         await this.patientsService.addGrowthRecord(this.patient.id, result);
         console.log('Growth record added successfully');
-      } else {
-        console.error('Patient or patient ID is undefined.');
       }
-    }
-  });
-  }
-  goToCalendar(patient: Patient) {
-    this.router.navigate(['/patient-calendar', patient.id], {
-      queryParams: { name: patient.firstName + ' ' + patient.lastName, gender: patient.gender },
     });
   }
+
+  goToCalendar(patient: Patient) {
+    this.router.navigate(['/patient-calendar', patient.id], {
+      queryParams: { name: `${patient.firstName} ${patient.lastName}`, gender: patient.gender },
+    });
+  }
+
   goToHistory() {
     this.router.navigate(['/patient-history']);
   }
 
   getAge(dob: any): number {
     if (!dob) return 0;
-
-    const birthDate = dob.toDate ? dob.toDate() : new Date(dob); // handles Firestore Timestamp or Date
+    const birthDate = dob.toDate ? dob.toDate() : new Date(dob);
     const today = new Date();
-
     let age = today.getFullYear() - birthDate.getFullYear();
     const m = today.getMonth() - birthDate.getMonth();
-
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-
     return age;
+  }
+
+  // Growth Charts
+  private setupCharts() {
+    if (!this.patient) return;
+
+    const reference = this.patient.gender === 'male' ? normalGrowthMale : normalGrowthFemale;
+    const months = reference.map((g) => `Month ${g.month}`);
+
+    const patientHeights = this.patientGrowth.map((g) => g.height);
+    const patientWeights = this.patientGrowth.map((g) => g.weight);
+    const referenceHeights = reference.map((g) => g.height);
+    const referenceWeights = reference.map((g) => g.weight);
+
+    this.heightChartData = {
+      labels: months,
+      datasets: [
+        {
+          label: 'Patient Height (cm)',
+          data: patientHeights,
+          borderColor: 'blue',
+          backgroundColor: 'rgba(54, 162, 235, 0.3)',
+          tension: 0.3,
+        },
+        {
+          label: 'WHO Normal Height',
+          data: referenceHeights,
+          borderColor: 'gray',
+          borderDash: [5, 5],
+          tension: 0.3,
+        },
+      ],
+    };
+
+    this.weightChartData = {
+      labels: months,
+      datasets: [
+        {
+          label: 'Patient Weight (kg)',
+          data: patientWeights,
+          borderColor: 'green',
+          backgroundColor: 'rgba(75, 192, 192, 0.3)',
+          tension: 0.3,
+        },
+        {
+          label: 'WHO Normal Weight',
+          data: referenceWeights,
+          borderColor: 'gray',
+          borderDash: [5, 5],
+          tension: 0.3,
+        },
+      ],
+    };
   }
 }

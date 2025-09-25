@@ -28,7 +28,7 @@
                 margin: 10px;
                 height: 100px;
                 width: 100px;
-                border-radius: 50%;
+                border-radius: 12px;
                 background-color: lightgray;
             }
             .patient-info{
@@ -75,7 +75,7 @@ mat-list-item {
 }
 
 .menu-item:hover {
-    background-color: #cecbcb;
+    background-color: #fff;
     cursor:  pointer;
 }
 
@@ -103,4 +103,12 @@ mat-list-item {
   position: fixed;
   bottom: 16px;
   right: 16px;
+}
+
+.card {
+    background-color: white;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 2px 2px 2px #e0e0e0;
+    margin-bottom: 24px;
 }

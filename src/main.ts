@@ -14,6 +14,11 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app';
 import { environment } from './environments/environment';
 
+import { Chart, registerables } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
+
+Chart.register(...registerables,zoomPlugin);
+
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),

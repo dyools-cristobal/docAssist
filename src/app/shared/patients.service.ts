@@ -15,6 +15,7 @@ import {
 } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
+import { getDoc } from 'firebase/firestore';
 
 export interface Patient {
   id?: string;
@@ -110,9 +111,36 @@ export class PatientsService {
   }
 
   // 🔹 Get patient by ID
-  getPatientById(id: string | null): Observable<Patient | undefined> {
-    const ref = doc(this.firestore, `patients/${id}`);
-    return docData(ref, { idField: 'id' }) as Observable<Patient | undefined>;
+  // getPatientById(id: string | null): Observable<Patient | undefined> {
+  //   const ref = doc(this.firestore, `patients/${id}`);
+  //   return docData(ref, { idField: 'id' }) as Observable<Patient | undefined>;
+  // }
+  // 🔹 Get patient details + growth records
+  async getPatientById(id: string): Promise<{ patient: Patient; growth: GrowthRecord[] }> {
+    // Get patient doc
+    const patientDoc = doc(this.firestore, `patients/${id}`);
+    const patientSnap = await getDoc(patientDoc);
+
+    if (!patientSnap.exists()) {
+      throw new Error(`Patient ${id} not found`);
+    }
+
+    const patient: Patient = {
+      id: patientSnap.id,
+      ...(patientSnap.data() as Omit<Patient, 'id'>),
+    };
+
+    // Get growth subcollection
+    const growthCol = collection(this.firestore, `patients/${id}/growth`);
+    const q = query(growthCol, orderBy('month', 'asc'));
+    const growthSnap = await getDocs(q);
+
+    const growth: GrowthRecord[] = growthSnap.docs.map(d => ({
+      id: d.id,
+      ...(d.data() as GrowthRecord),
+    }));
+
+    return { patient, growth };
   }
 
   // 🔹 Add new growth record
