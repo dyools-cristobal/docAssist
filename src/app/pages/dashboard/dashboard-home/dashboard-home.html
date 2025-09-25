@@ -10,11 +10,21 @@
       <div class="appt-name">{{ appt.patientName }}</div>
       <div class="appt-type">{{ appt.type }}, {{ appt.details }}</div>
     </div>
-    <mat-icon [ngClass]="{
+    <!-- <mat-icon [ngClass]="{
               'status-waiting': appt.status === 'waiting',
               'status-progress': appt.status === 'in-progress',
               'status-done': appt.status === 'done'
-            }">check_circle</mat-icon>
+            }">check_circle</mat-icon> -->
+
+    @if(appt.status === 'waiting') {<div class=" chip waiting-chip">Waiting</div>}
+    @if(appt.status === 'in-progress') {<div class="chip in-progress-chip">In-Progress</div>}
+    @if(appt.status === 'done') {<div class="chip done-chip">Done</div>}
+    @if(appt.status === 'cancelled') {<div class="chip cancelled-chip">Cancelled</div>}
+    
+
+    
+    
+   
     <button mat-icon-button (click)="goToPatient(appt.patientId)">
       <mat-icon>arrow_forward</mat-icon>
     </button>

@@ -4,13 +4,13 @@ import { ActivatedRoute } from '@angular/router';
 import { PatientsService, Patient } from '../../../shared/patients.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { DatePipe, NgIf } from '@angular/common';
+import {  NgIf } from '@angular/common';
 
 
 @Component({
   standalone: true,
   selector: 'app-patient-dashboard',
-  imports: [MatIconModule, MatListModule, DatePipe, NgIf],
+  imports: [MatIconModule, MatListModule, NgIf],
   templateUrl: './patient-dashboard.html',
   styleUrl: './patient-dashboard.scss'
 })

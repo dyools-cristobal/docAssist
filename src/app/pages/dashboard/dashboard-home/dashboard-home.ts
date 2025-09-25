@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { AsyncPipe, CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, NgFor, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 
 
@@ -24,7 +24,7 @@ export interface Appointment {
 
 @Component({
   selector: 'app-dashboard-home',
-  imports: [AsyncPipe, NgFor, NgIf, MatIconModule, DatePipe, MatButtonModule, CommonModule],
+  imports: [AsyncPipe, NgFor, NgIf, MatIconModule, MatButtonModule, CommonModule],
   templateUrl: './dashboard-home.html',
   styleUrl: './dashboard-home.scss'
 })

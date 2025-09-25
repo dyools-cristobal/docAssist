@@ -55,3 +55,33 @@ h2 {
   color: green; // ✅ looks much clearer
 }
 
+.chip {
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+.chip:hover {
+  cursor: pointer;
+}
+
+.waiting-chip {
+  border: solid 1px gray;
+  color: gray;
+}
+
+.in-progress-chip {
+  border: solid 1px dodgerblue;
+  color: dodgerblue;
+}
+
+.done-chip {
+  border: solid 1px #0CC771;
+  color: white;
+  background-color: #0CC771;
+}
+
+.cancelled-chip {
+  border: solid 1px #f76451;
+  color: white;
+  background-color: #f76451;
+}
