@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Start Appointment?</h2>
+    <mat-dialog-content>
+      <p>Would you like to start the appointment with {{ data.patientName }}?</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="dialogRef.close(false)">No</button>
+      <button mat-flat-button color="primary" (click)="dialogRef.close(true)">Yes</button>
+    </mat-dialog-actions>

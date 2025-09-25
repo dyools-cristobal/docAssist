@@ -21,11 +21,8 @@
     @if(appt.status === 'done') {<div class="chip done-chip">Done</div>}
     @if(appt.status === 'cancelled') {<div class="chip cancelled-chip">Cancelled</div>}
     
-
-    
-    
    
-    <button mat-icon-button (click)="goToPatient(appt.patientId)">
+    <button mat-icon-button (click)="goToPatient(appt)">
       <mat-icon>arrow_forward</mat-icon>
     </button>
   </div>

@@ -55,8 +55,8 @@ export class DashboardHome {
     this.appointments$ = collectionData(q, { idField: 'id' }) as Observable<Appointment[]>;
   }
 
-  goToPatient(patientId: string) {
-    this.router.navigate(['/patient-dashboard'], { queryParams: { patientID: patientId } });
+  goToPatient(appt: any) {
+    this.router.navigate(['/patient-dashboard'], { queryParams: { patientID: appt.patientId, appointmentID: appt.id } });
   }
 
   formatTime24to12(time: string): string {
