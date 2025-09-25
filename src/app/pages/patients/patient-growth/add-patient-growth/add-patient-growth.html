@@ -1,0 +1,25 @@
+<div class="container">
+  <h2 mat-dialog-title>Add Growth Record</h2>
+
+  <form [formGroup]="form" class="dialog-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Height (cm)</mat-label>
+      <input matInput type="number" formControlName="height" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Weight (kg)</mat-label>
+      <input matInput type="number" formControlName="weight" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Month</mat-label>
+      <input matInput type="number" formControlName="month" />
+    </mat-form-field>
+  </form>
+
+  <div class="actions">
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-flat-button color="primary" (click)="save()" [disabled]="form.invalid">Save</button>
+  </div>
+</div>

@@ -7,50 +7,56 @@ import { NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentService } from '../../../shared/appointment.service';
 import { ConfirmStartAppointment } from '../../../shared/confirm-start-appointment/confirm-start-appointment';
+import { MatButtonModule } from '@angular/material/button';
+import { AddPatientGrowth } from '../patient-growth/add-patient-growth/add-patient-growth';
 
 @Component({
   standalone: true,
   selector: 'app-patient-dashboard',
-  imports: [MatIconModule, MatListModule, NgIf],
+  imports: [MatIconModule, MatListModule, NgIf, MatButtonModule],
   templateUrl: './patient-dashboard.html',
-  styleUrl: './patient-dashboard.scss'
+  styleUrl: './patient-dashboard.scss',
 })
 export class PatientDashboard implements OnInit {
   private route = inject(ActivatedRoute);
   private patientsService = inject(PatientsService);
   private appointmentsService = inject(AppointmentService); // <--
   private dialog = inject(MatDialog);
+  private dialogOpened = false;
+  patient?: Patient | undefined;
 
-  patient?: Patient;
+  appointmentID: string | null = '';
+  patientID: string | null = '';
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.queryParamMap.get('patientID');
-    const appointmentID = this.route.snapshot.queryParamMap.get('appointmentID');
+    this.patientID = this.route.snapshot.queryParamMap.get('patientID');
+    this.appointmentID = this.route.snapshot.queryParamMap.get('appointmentID');
 
-    if (!id) {
+    if (!this.patientID) {
       console.warn('No patientID in query params');
       return;
     }
 
-    this.patientsService.getPatientById(id).subscribe(p => {
+    this.patientsService.getPatientById(this.patientID).subscribe((p) => {
       this.patient = p;
 
       // show appointment dialog if coming from dashboard
-      if (appointmentID && p) {
-        this.openAppointmentDialog(appointmentID, p);
+      if (this.appointmentID !== null && p && !this.dialogOpened) {
+        this.dialogOpened = true;
+        this.openAppointmentDialog(this.appointmentID, p);
       }
     });
   }
 
-  private openAppointmentDialog(appointmentID: string, patient: Patient) {
+  private openAppointmentDialog(appointmentID: string | null, patient: Patient) {
     const dialogRef = this.dialog.open(ConfirmStartAppointment, {
       data: { patientName: `${patient.firstName} ${patient.lastName}` },
-      disableClose: true
+      disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // doctor clicked Yes
         this.appointmentsService.updateStatus(appointmentID, 'in-progress').then(() => {
@@ -62,15 +68,37 @@ export class PatientDashboard implements OnInit {
     });
   }
 
+  startAppointment() {
+      if (this.appointmentID !== null && this.patient) {
+        this.openAppointmentDialog(this.appointmentID, this.patient);
+      }
+    ;
+  }
+
   goToInfo() {
     this.router.navigate(['/patient-information'], { state: { patient: this.patient } });
   }
-  goToGrowth() {
-    this.router.navigate(['/patient-growth']);
+  
+  addNewGrowthRecord() {
+    const dialogRef = this.dialog.open(AddPatientGrowth, {
+      data: { patientID: `${this.patientID}` },
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+    if (result) {
+      // result should contain {height, weight, month}
+      if (this.patient && this.patient.id) {
+        await this.patientsService.addGrowthRecord(this.patient.id, result);
+        console.log('Growth record added successfully');
+      } else {
+        console.error('Patient or patient ID is undefined.');
+      }
+    }
+  });
   }
   goToCalendar(patient: Patient) {
     this.router.navigate(['/patient-calendar', patient.id], {
-      queryParams: { name: patient.firstName + ' ' + patient.lastName, gender: patient.gender }
+      queryParams: { name: patient.firstName + ' ' + patient.lastName, gender: patient.gender },
     });
   }
   goToHistory() {

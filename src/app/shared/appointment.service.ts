@@ -30,7 +30,7 @@ export class AppointmentService {
   }
 
   // ✅ Update status of an appointment
-  async updateStatus(id: string, status: string): Promise<void> {
+  async updateStatus(id: string | null, status: string): Promise<void> {
     const ref = doc(this.firestore, `appointments/${id}`);
     await updateDoc(ref, { status });
   }
