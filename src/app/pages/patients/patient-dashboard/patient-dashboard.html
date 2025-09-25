@@ -9,25 +9,50 @@
       </div>
     </div>
   </div>
-  
+
   <div class="patient-allergies" *ngIf="patient?.allergies?.length">
     <mat-icon>warning_outline</mat-icon>
-    <span 
-      >Allergies: {{ patient?.allergies }}</span
-    >
+    <span>Allergies: {{ patient?.allergies }}</span>
     <ng-template #noAllergies>No known allergies</ng-template>
   </div>
 
   <mat-list>
-    <mat-list-item (click)="goToInfo()" class="menu-item">🧾 Information</mat-list-item>
+    <mat-list-item (click)="goToInfo()" class="menu-item">
+      <div class="menu-content">
+        <mat-icon matListIcon>post_add</mat-icon>
+        <div matLine>Quick Note</div>
+      </div>
+    </mat-list-item>
 
-    <mat-list-item (click)="patient && goToCalendar(patient)" class="menu-item"
-      >📅 Appointments</mat-list-item
-    >
+    <mat-list-item (click)="goToInfo()" class="menu-item">
+      <div class="menu-content">
+        <mat-icon matListIcon>switch_access_shortcut_add</mat-icon>
+        <div matLine>Add Growth</div>
+      </div>
+    </mat-list-item>
 
-    <mat-list-item (click)="goToGrowth()" class="menu-item">📈 Growth</mat-list-item>
+  
 
-    <mat-list-item (click)="goToHistory()" class="menu-item">📂 History</mat-list-item>
+    <mat-list-item (click)="goToInfo()" class="menu-item">
+      <div class="menu-content">
+        <mat-icon matListIcon>info_outline</mat-icon>
+        <div matLine>Information</div>
+      </div>
+    </mat-list-item>
 
+    <mat-list-item (click)="patient && goToCalendar(patient)" class="menu-item">
+      <div class="menu-content">
+        <mat-icon matListIcon>calendar_month</mat-icon>
+        <div matLine>Calendar</div>
+      </div>
+    
+    </mat-list-item>
+
+    <mat-list-item (click)="goToHistory()" class="menu-item">
+      <div class="menu-content">
+        <mat-icon matListIcon>history</mat-icon>
+        <div matLine>History</div>
+      </div>
+    </mat-list-item>
   </mat-list>
 </div>

@@ -58,11 +58,19 @@
 }
 mat-list-item {
     font-size: 16px;
-    border-radius: 12px;
+    border-radius: 8px;
     margin-top: 10px;
     padding: 10px;
     box-shadow: 2px 2px 2px #e0e0e0;
 }
+
+.menu-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;   // ensures it stretches full width if needed
+}
+
 .menu-item:hover {
     background-color: #cecbcb;
     cursor:  pointer;

@@ -66,6 +66,10 @@ ngAfterViewInit() {
   });
 }
   
+applyFilter() {
+  this.dataSource.filter = this.searchTerm.trim().toLowerCase();
+}
+
 remove(id: string) { this.svc.remove(id); }
 
 openConfirmDialog(id: string) {
