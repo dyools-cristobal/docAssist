@@ -23,6 +23,7 @@ export class AppComponent {
   goBack() {
         this.location.back();
   }
+  
   goHome() {
       this.route.navigate(['/dashboard']);
   }
