@@ -1,12 +1,14 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Auth, user, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private auth = inject(Auth);
   user$: Observable<import('firebase/auth').User | null> = user(this.auth);
 
+   currentUser = toSignal(user(this.auth));
   login(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
   }

@@ -12,7 +12,7 @@ import {MatMenuModule} from '@angular/material/menu';
   standalone: true,
   imports: [RouterOutlet, MatToolbarModule, MatButtonModule, AsyncPipe, NgIf, MatIconModule, MatMenuModule ],
   templateUrl: './app.html',
-  styles: [`.spacer{flex:1}`]
+  styleUrls: ['./app.scss']
 })
 export class AppComponent {
   auth = inject(AuthService);
@@ -21,7 +21,10 @@ export class AppComponent {
   constructor(public route: Router, private location: Location) {}
 
   goBack() {
-    this.location.back();
+        this.location.back();
+  }
+  goHome() {
+      this.route.navigate(['/dashboard']);
   }
 
   showBackButton(): boolean {
@@ -30,5 +33,9 @@ export class AppComponent {
   async handleLogout() {
     await this.auth.logout();
     this.route.navigate(['/login']);
+  }
+
+  get userName(): string | null {
+    return this.auth.currentUser()?.displayName || this.auth.currentUser()?.email || null;
   }
 }

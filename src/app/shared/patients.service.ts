@@ -64,6 +64,8 @@ export class PatientsService {
   private auth = inject(Auth);
   private patientsCol = collection(this.firestore, 'patients');
 
+ 
+
   // 🔹 Get all patients for the current logged-in doctor
   list(): Observable<Patient[]> {
     const user = this.auth.currentUser;
