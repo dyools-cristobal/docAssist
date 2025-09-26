@@ -62,6 +62,7 @@ export interface Patient {
 }
 
 export interface GrowthRecord {
+  id?: string;
   height: number;
   weight: number;
   month: number;
@@ -110,38 +111,33 @@ export class PatientsService {
     return deleteDoc(patientRef);
   }
 
-  // 🔹 Get patient by ID
-  // getPatientById(id: string | null): Observable<Patient | undefined> {
-  //   const ref = doc(this.firestore, `patients/${id}`);
-  //   return docData(ref, { idField: 'id' }) as Observable<Patient | undefined>;
-  // }
-  // 🔹 Get patient details + growth records
-  async getPatientById(id: string): Promise<{ patient: Patient; growth: GrowthRecord[] }> {
-    // Get patient doc
-    const patientDoc = doc(this.firestore, `patients/${id}`);
-    const patientSnap = await getDoc(patientDoc);
+ async getPatientById(id: string): Promise<{ patient: Patient; growth: GrowthRecord[] }> {
+  // Get patient doc
+  const patientDoc = doc(this.firestore, `patients/${id}`);
+  const patientSnap = await getDoc(patientDoc);
 
-    if (!patientSnap.exists()) {
-      throw new Error(`Patient ${id} not found`);
-    }
-
-    const patient: Patient = {
-      id: patientSnap.id,
-      ...(patientSnap.data() as Omit<Patient, 'id'>),
-    };
-
-    // Get growth subcollection
-    const growthCol = collection(this.firestore, `patients/${id}/growth`);
-    const q = query(growthCol, orderBy('month', 'asc'));
-    const growthSnap = await getDocs(q);
-
-    const growth: GrowthRecord[] = growthSnap.docs.map(d => ({
-      id: d.id,
-      ...(d.data() as GrowthRecord),
-    }));
-
-    return { patient, growth };
+  if (!patientSnap.exists()) {
+    throw new Error(`Patient ${id} not found`);
   }
+
+  const patient: Patient = {
+    id: patientSnap.id,
+    ...(patientSnap.data() as Omit<Patient, 'id'>),
+  };
+
+  // Get growth subcollection
+  const growthCol = collection(this.firestore, `patients/${id}/growth`);
+  const q = query(growthCol, orderBy('month', 'asc'));
+  const growthSnap = await getDocs(q);
+
+  const growth: GrowthRecord[] = growthSnap.docs.map(d => ({
+    id: d.id, // ✅ always take Firestore doc id
+    ...(d.data() as Omit<GrowthRecord, 'id'>),
+  }));
+
+  return { patient, growth };
+}
+
 
   // 🔹 Add new growth record
   async addGrowthRecord(patientID: string, record: GrowthRecord): Promise<void> {
@@ -159,6 +155,7 @@ export class PatientsService {
     const snapshot = await getDocs(q);
 
     return snapshot.docs.map((doc) => ({
+      id: doc.id,
       ...(doc.data() as GrowthRecord),
     }));
   }

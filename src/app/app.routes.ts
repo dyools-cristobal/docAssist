@@ -11,7 +11,7 @@ export const routes: Routes = [
   { path: 'patient-dashboard:id',  canActivate: [authGuard], loadComponent: ()   => import('./pages/patients/patient-dashboard/patient-dashboard').then(m => m.PatientDashboard) },
   { path: 'patient-information',  canActivate: [authGuard], loadComponent: ()   => import('./pages/patients/patient-information/patient-information').then(m => m.PatientInformation) },
   { path: 'patient-history',  canActivate: [authGuard], loadComponent: ()   => import('./pages/patients/patient-history/patient-history').then(m => m.PatientHistory) },
-  { path: 'patient-growth',  canActivate: [authGuard], loadComponent: ()   => import('./pages/patients/patient-growth/patient-growth').then(m => m.PatientGrowth) },
+  { path: 'patient-growth/:id',  canActivate: [authGuard], loadComponent: ()   => import('./pages/patients/patient-growth/patient-growth').then(m => m.PatientGrowth) },
   { path: 'patient-calendar/:id',  canActivate: [authGuard], loadComponent: ()   => import('./pages/patients/patient-calendar/patient-calendar').then(m => m.PatientCalendar) },
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
   { path: '**', redirectTo: 'dashboard' },

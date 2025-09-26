@@ -1,68 +1,84 @@
 <div class="container">
-  <div class="row">
-    <div class="patient-header">
-      <img class="patient-photo" src="#" alt="" />
-      <div class="patient-info">
-        <div class="patient-name">{{ patient?.firstName }} {{ patient?.lastName }}</div>
-        <div class="patient-dob">Age: {{ getAge(patient?.dob) }}</div>
-        <div class="patient-gender">Gender: {{ patient?.gender }}</div>
+  <div class="sub-container">
+    <div class="row">
+      <div class="patient-header">
+        <img class="patient-photo" src="#" alt="" />
+        <div class="patient-info">
+          <div class="patient-name">{{ patient?.firstName }} {{ patient?.lastName }}</div>
+          <div class="patient-dob">Age: {{ getAge(patient?.dob) }}</div>
+          <div class="patient-gender">Gender: {{ patient?.gender }}</div>
+        </div>
       </div>
+    </div>
+    <div class="box patient-menu">
+      <div class="patient-allergies" *ngIf="patient?.allergies?.length">
+        <mat-icon>warning_outline</mat-icon>
+        <span>Allergies: {{ patient?.allergies }}</span>
+        <ng-template #noAllergies>No known allergies</ng-template>
+      </div>
+
+      <div class="action-title">Clinical actions</div>
+      <mat-list>
+        <mat-list-item (click)="goToInfo()" class="menu-item">
+          <div class="menu-content">
+            <mat-icon matListIcon>post_add</mat-icon>
+            <div matLine>Quick Note</div>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item (click)="addNewGrowthRecord()" class="menu-item">
+          <div class="menu-content">
+            <mat-icon matListIcon>switch_access_shortcut_add</mat-icon>
+            <div matLine>Add Growth</div>
+          </div>
+        </mat-list-item>
+
+        <div class="action-title">Data</div>
+        <mat-list-item (click)="goToInfo()" class="menu-item">
+          <div class="menu-content">
+            <mat-icon matListIcon>info_outline</mat-icon>
+            <div matLine>Information</div>
+          </div>
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/patient-growth', patient?.id]" class="menu-item">
+          <div class="menu-content">
+            <mat-icon matListIcon>switch_access_shortcut_add</mat-icon>
+            <div matLine>Growth</div>
+          </div>
+        </mat-list-item>
+        <mat-list-item (click)="goToHistory()" class="menu-item">
+          <div class="menu-content">
+            <mat-icon matListIcon>history</mat-icon>
+            <div matLine>History</div>
+          </div>
+        </mat-list-item>
+        <mat-list-item class="menu-item">
+          <div class="menu-content">
+            <mat-icon matListIcon>biotech</mat-icon>
+            <div matLine>Lab Results</div>
+          </div>
+        </mat-list-item>
+
+        <div class="action-title">Scheduling</div>
+        <mat-list-item (click)="patient && goToCalendar(patient)" class="menu-item">
+          <div class="menu-content">
+            <mat-icon matListIcon>calendar_month</mat-icon>
+            <div matLine>Calendar</div>
+          </div>
+        </mat-list-item>
+      </mat-list>
     </div>
   </div>
 
-  <div class="sub-container">
-    <div class="patient-allergies" *ngIf="patient?.allergies?.length">
-      <mat-icon>warning_outline</mat-icon>
-      <span>Allergies: {{ patient?.allergies }}</span>
-      <ng-template #noAllergies>No known allergies</ng-template>
-    </div>
-
-    <div class="action-title">Clinical actions</div>
-    <mat-list>
-      <mat-list-item (click)="goToInfo()" class="menu-item">
-        <div class="menu-content">
-          <mat-icon matListIcon>post_add</mat-icon>
-          <div matLine>Quick Note</div>
-        </div>
-      </mat-list-item>
-
-      <mat-list-item (click)="addNewGrowthRecord()" class="menu-item">
-        <div class="menu-content">
-          <mat-icon matListIcon>switch_access_shortcut_add</mat-icon>
-          <div matLine>Add Growth</div>
-        </div>
-      </mat-list-item>
-
-      <div class="action-title">Data</div>
-      <mat-list-item (click)="goToInfo()" class="menu-item">
-        <div class="menu-content">
-          <mat-icon matListIcon>info_outline</mat-icon>
-          <div matLine>Information</div>
-        </div>
-      </mat-list-item>
-      <mat-list-item (click)="goToHistory()" class="menu-item">
-        <div class="menu-content">
-          <mat-icon matListIcon>history</mat-icon>
-          <div matLine>History</div>
-        </div>
-      </mat-list-item>
-
-      <div class="action-title">Scheduling</div>
-      <mat-list-item (click)="patient && goToCalendar(patient)" class="menu-item">
-        <div class="menu-content">
-          <mat-icon matListIcon>calendar_month</mat-icon>
-          <div matLine>Calendar</div>
-        </div>
-      </mat-list-item>
-    </mat-list>
-    <div class="action-title">Height</div>
-    <div class="card">
+  <div class="graphs">
+    <div class="action-title">Growth Data</div>
+    <div class="graph-card">
+      <div class="">Height</div>
       <canvas baseChart [data]="heightChartData" [options]="heightChartOptions" [type]="'line'">
       </canvas>
     </div>
-
-    <div class="action-title">Weight</div>
-    <div class="card">
+    <div class="graph-card">
+      <div class="">Weight</div>
       <canvas baseChart [data]="weightChartData" [options]="weightChartOptions" [type]="'line'">
       </canvas>
     </div>

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { PatientsService, Patient } from '../../../shared/patients.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -16,7 +16,7 @@ import { normalGrowthMale, normalGrowthFemale } from '../../../shared/constants/
 @Component({
   standalone: true,
   selector: 'app-patient-dashboard',
-  imports: [MatIconModule, MatListModule, NgIf, MatButtonModule, NgChartsModule],
+  imports: [MatIconModule, MatListModule, NgIf, MatButtonModule, NgChartsModule, RouterLink],
   templateUrl: './patient-dashboard.html',
   styleUrl: './patient-dashboard.scss',
 })
@@ -39,24 +39,25 @@ export class PatientDashboard implements OnInit {
   // Chart options
   heightChartOptions: ChartOptions<'line'> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { position: 'top' },
       tooltip: { enabled: true },
       zoom: {
-      pan: {
-        enabled: true,
-        mode: 'x', // or 'y' or 'xy'
-      },
-      zoom: {
-        wheel: {
-          enabled: true, // zoom with mouse wheel
+        pan: {
+          enabled: true,
+          mode: 'x', // or 'y' or 'xy'
         },
-        pinch: {
-          enabled: true, // zoom with pinch on trackpad/touch
+        zoom: {
+          wheel: {
+            enabled: true, // zoom with mouse wheel
+          },
+          pinch: {
+            enabled: true, // zoom with pinch on trackpad/touch
+          },
+          mode: 'x', // zoom along x axis (months)
         },
-        mode: 'x', // zoom along x axis (months)
       },
-    },
     },
     scales: {
       x: { title: { display: true, text: 'Months' } },
@@ -66,24 +67,25 @@ export class PatientDashboard implements OnInit {
 
   weightChartOptions: ChartOptions<'line'> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { position: 'top' },
       tooltip: { enabled: true },
       zoom: {
-      pan: {
-        enabled: true,
-        mode: 'x', // or 'y' or 'xy'
-      },
-      zoom: {
-        wheel: {
-          enabled: true, // zoom with mouse wheel
+        pan: {
+          enabled: true,
+          mode: 'x', // or 'y' or 'xy'
         },
-        pinch: {
-          enabled: true, // zoom with pinch on trackpad/touch
+        zoom: {
+          wheel: {
+            enabled: true, // zoom with mouse wheel
+          },
+          pinch: {
+            enabled: true, // zoom with pinch on trackpad/touch
+          },
+          mode: 'x', // zoom along x axis (months)
         },
-        mode: 'x', // zoom along x axis (months)
       },
-    },
     },
     scales: {
       x: { title: { display: true, text: 'Months' } },
@@ -165,6 +167,10 @@ export class PatientDashboard implements OnInit {
     this.router.navigate(['/patient-history']);
   }
 
+  goToGrowth() {
+    this.router.navigate(['/patient-growth']);
+  }
+
   getAge(dob: any): number {
     if (!dob) return 0;
     const birthDate = dob.toDate ? dob.toDate() : new Date(dob);
@@ -182,51 +188,64 @@ export class PatientDashboard implements OnInit {
     if (!this.patient) return;
 
     const reference = this.patient.gender === 'male' ? normalGrowthMale : normalGrowthFemale;
-    const months = reference.map((g) => `Month ${g.month}`);
-
-    const patientHeights = this.patientGrowth.map((g) => g.height);
-    const patientWeights = this.patientGrowth.map((g) => g.weight);
-    const referenceHeights = reference.map((g) => g.height);
-    const referenceWeights = reference.map((g) => g.weight);
 
     this.heightChartData = {
-      labels: months,
       datasets: [
         {
-          label: 'Patient Height (cm)',
-          data: patientHeights,
-          borderColor: 'blue',
-          backgroundColor: 'rgba(54, 162, 235, 0.3)',
-          tension: 0.3,
+          label: 'WHO Normal Height',
+          data: reference.map((g) => ({ x: g.month, y: g.height })),
+          borderColor: 'gray',
+          borderDash: [1, 5],
+          tension: 0.4,
+          pointRadius: 0,
         },
         {
-          label: 'WHO Normal Height',
-          data: referenceHeights,
-          borderColor: 'gray',
-          borderDash: [5, 5],
-          tension: 0.3,
+          label: 'Patient Height (cm)',
+          data: this.patientGrowth.map((g) => ({ x: g.month, y: g.height })),
+          borderColor: 'blue',
+          backgroundColor: 'rgba(54, 162, 235, 0.3)',
+          tension: 0.4,
+          pointRadius: 4,
         },
       ],
     };
 
     this.weightChartData = {
-      labels: months,
       datasets: [
         {
+          label: 'WHO Normal Weight',
+          data: reference.map((g) => ({ x: g.month, y: g.weight })),
+          borderColor: 'gray',
+          borderDash: [1, 5],
+          tension: 0.3,
+          pointRadius: 0,
+        },
+        {
           label: 'Patient Weight (kg)',
-          data: patientWeights,
+          data: this.patientGrowth.map((g) => ({ x: g.month, y: g.weight })),
           borderColor: 'green',
           backgroundColor: 'rgba(75, 192, 192, 0.3)',
           tension: 0.3,
-        },
-        {
-          label: 'WHO Normal Weight',
-          data: referenceWeights,
-          borderColor: 'gray',
-          borderDash: [5, 5],
-          tension: 0.3,
+          pointRadius: 4,
         },
       ],
+    };
+
+    // ✅ ensure x-axis is linear (already set in your ChartOptions)
+    this.heightChartOptions = {
+      ...this.heightChartOptions,
+      scales: {
+        x: { type: 'linear', title: { display: true, text: 'Months' } },
+        y: { title: { display: true, text: 'Height (cm)' }, beginAtZero: true },
+      },
+    };
+
+    this.weightChartOptions = {
+      ...this.weightChartOptions,
+      scales: {
+        x: { type: 'linear', title: { display: true, text: 'Months' } },
+        y: { title: { display: true, text: 'Weight (kg)' }, beginAtZero: true },
+      },
     };
   }
 }

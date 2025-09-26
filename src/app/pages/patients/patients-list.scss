@@ -1,3 +1,4 @@
+@use '../../../assets/styles/variables' as var;
 .full-width{width:100%}
 .toolbar{padding:16px} 
 .fab {
@@ -7,3 +8,11 @@
   z-index: 100;
 }
 table{width:100%;padding:0 16px}
+
+.open-button {
+  color: var.$edit; /* Green color for open button */
+}
+
+.delete-button {
+  color: var.$fail; /* Red color for delete button */
+}

@@ -15,11 +15,13 @@ import { ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ConfirmDialog, ConfirmDialogData } from '../../shared/confirm-dialog/confirm-dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @Component({
   standalone: true,
   selector: 'app-patients-list',
-  imports: [ MatTableModule, MatIconModule, MatButtonModule, MatIconModule, MatDialogModule, DatePipe, FormsModule, MatFormFieldModule, MatInputModule, MatSortModule],
+  imports: [MatTableModule, MatIconModule, MatButtonModule, MatIconModule, MatDialogModule, DatePipe, FormsModule, MatFormFieldModule, MatInputModule, MatSortModule, MatTooltipModule],
   templateUrl: './patients-list.html',
   styleUrl: './patients-list.scss'
 })

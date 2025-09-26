@@ -21,11 +21,11 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let p">
-        <button mat-icon-button (click)="goToDashboard(p)">
-          <mat-icon>open_in_full</mat-icon>
+        <button mat-icon-button (click)="goToDashboard(p)" matTooltip="View Patient Record" class="open-button">
+          <mat-icon>open_in_new</mat-icon>
         </button>
-        <button mat-icon-button (click)="openConfirmDialog(p.id!)">
-          <mat-icon>delete</mat-icon>
+        <button mat-icon-button (click)="openConfirmDialog(p.id!)" matTooltip="Delete Patient Record" class="delete-button">
+          <mat-icon>delete_forever</mat-icon>
         </button>
       </td>
     </ng-container>

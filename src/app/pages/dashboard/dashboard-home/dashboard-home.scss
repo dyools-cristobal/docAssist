@@ -1,3 +1,4 @@
+@use '../../../../assets/styles/variables' as vars;
 h2 {
     margin: 24px;
     font-weight: 300;
@@ -6,10 +7,10 @@ h2 {
 .appt-card {
   display: flex;
   align-items: center;
-  background: #fff;
+  background: vars.$white;
   border-radius: 8px;
   margin: 8px 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px vars.$light-gray;
   overflow: hidden;
   padding: 12px;
 }
@@ -20,11 +21,11 @@ h2 {
 }
 
 .female-border {
-  border-left: solid 15px #f28b82; // pinkish
+  border-left: solid 15px vars.$female;
 }
 
 .male-border {
-  border-left: solid 15px #3c6e71; // tealish
+  border-left: solid 15px vars.$male;
 }
 
 .appt-info {
@@ -42,17 +43,17 @@ h2 {
 
 .appt-type {
   font-size: 12px;
-  color: #666;
+  color: vars.$dark-gray;
 }
 
 .status-waiting {
-  color: gray;
+  color: vars.$doc-gray; 
 }
 .status-progress {
-  color: dodgerblue; // or amber
+  color: vars.$edit; 
 }
 .status-done {
-  color: green; // ✅ looks much clearer
+  color: vars.$success; 
 }
 
 .chip {
@@ -65,23 +66,23 @@ h2 {
 }
 
 .waiting-chip {
-  border: solid 1px gray;
-  color: gray;
+  border: solid 1px vars.$doc-gray;
+  color: vars.$doc-gray;
 }
 
 .in-progress-chip {
-  border: solid 1px dodgerblue;
-  color: dodgerblue;
+  border: solid 1px vars.$edit;
+  color: vars.$edit;
 }
 
 .done-chip {
-  border: solid 1px #0CC771;
-  color: white;
-  background-color: #0CC771;
+  border: solid 1px vars.$success;
+  color: vars.$white;
+  background-color: vars.$success;
 }
 
 .cancelled-chip {
-  border: solid 1px #f76451;
-  color: white;
-  background-color: #f76451;
+  border: solid 1px vars.$fail;
+  color: vars.$white;
+  background-color: vars.$fail;
 }
