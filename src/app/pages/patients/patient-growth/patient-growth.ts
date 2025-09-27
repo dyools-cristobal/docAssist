@@ -53,6 +53,7 @@ export class PatientGrowth implements OnInit {
   }
 
   edit(record: GrowthRecord) {
+    console.log(record);
   const dialogRef = this.dialog.open(AddPatientGrowth, {
     data: { patientId: this.patientId, record }
   });

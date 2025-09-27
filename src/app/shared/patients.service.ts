@@ -139,14 +139,17 @@ export class PatientsService {
 }
 
 
-  // 🔹 Add new growth record
-  async addGrowthRecord(patientID: string, record: GrowthRecord): Promise<void> {
-    const growthCol = collection(this.firestore, `patients/${patientID}/growth`);
-    await addDoc(growthCol, {
-      ...record,
-      createdAt: new Date(), // store server timestamp if needed
-    });
-  }
+  async addGrowthRecord(patientId: string, record: Omit<GrowthRecord, 'id'>) {
+  const col = collection(this.firestore, `patients/${patientId}/growth`);
+  
+  // remove any accidental `id` before saving
+  const { id, ...data } = record as GrowthRecord;
+  return addDoc(col, {
+    ...data,
+    createdAt: new Date(),
+  });
+}
+
 
   // 🔹 Get all growth records for a patient (sorted by month)
   async getGrowthRecords(patientID: string): Promise<GrowthRecord[]> {
@@ -160,14 +163,14 @@ export class PatientsService {
     }));
   }
 
-  // 🔹 Edit a growth record by ID
-  async editGrowthRecord(patientID: string, recordID: string, updates: Partial<GrowthRecord>): Promise<void> {
-    const growthDoc = doc(this.firestore, `patients/${patientID}/growth/${recordID}`);
-    await updateDoc(growthDoc, {
-      ...updates,
-      updatedAt: new Date(),
-    });
-  }
+  async editGrowthRecord(patientID: string, recordID: string, updates: Partial<GrowthRecord>) {
+  const growthDoc = doc(this.firestore, `patients/${patientID}/growth/${recordID}`);
+  const { id, ...cleanUpdates } = updates;
+  await updateDoc(growthDoc, {
+    ...cleanUpdates,
+    updatedAt: new Date(),
+  });
+}
 
   // 🔹 Delete a growth record by ID
   async deleteGrowthRecord(patientID: string, recordID: string): Promise<void> {
