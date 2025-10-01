@@ -1,0 +1,89 @@
+@use '../../../assets/styles/variables'as var;
+
+.form-container {
+    display: grid;
+    gap: 16px;
+    width: auto;
+
+    h3 {
+        text-align: center;
+    }
+
+    mat-form-field {
+        width: 100%;
+    }
+
+    .growth-form {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+
+        mat-form-field {
+            flex: 1 1 100px;
+            min-width: 230px;
+        }
+
+    }
+
+}
+
+.step-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.vaccinations {
+    display: grid;
+    overflow-y: auto;
+    max-width: 700px;
+}
+.vaccination-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+
+    mat-form-field {
+        flex: 1 1 150px;
+        min-width: 120px;
+    }
+
+    button {
+        margin-top: 0.5rem flex 1 1 50px;
+    }
+}
+
+.full-width {
+    width: 100%;
+}
+
+mat-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.5rem 0 1rem 0;
+}
+
+.custom-symptom {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    mat-form-field {
+        flex: 1;
+    }
+}
+
+::ng-deep .mat-mdc-form-field .mat-mdc-chip-grid {
+    padding-top: 1.5rem !important;
+    /* pushes chips down so label stays above */
+    min-height: 56px !important;
+    /* matches input height */
+}
+
+::ng-deep .mat-mdc-chip {
+    height: 28px !important;
+    /* smaller chip height if needed */
+    line-height: 26px !important;
+}

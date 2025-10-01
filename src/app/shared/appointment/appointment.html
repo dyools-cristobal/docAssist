@@ -1,0 +1,216 @@
+<mat-horizontal-stepper linear #stepper>
+  <!-- Step 1: Growth -->
+  <mat-step [stepControl]="growthForm">
+    <form [formGroup]="growthForm">
+      <div class="form-container">
+        <h3>Patient Growth</h3>
+        <div class="growth-form">
+          <mat-form-field appearance="fill">
+            <mat-label>Height (cm)</mat-label>
+            <input matInput formControlName="height" type="number" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Weight (kg)</mat-label>
+            <input matInput formControlName="weight" type="number" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Month</mat-label>
+            <input
+              matInput
+              formControlName="month"
+              type="number"
+              placeholder="Please enter a month"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="step-controls">
+        <button mat-flat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Step 2: Medical Records -->
+  <mat-step [stepControl]="medicalForm">
+    <form [formGroup]="medicalForm">
+      <div class="form-container">
+        <h3>Medical Documents</h3>
+        <mat-form-field appearance="fill">
+          <mat-label>Upload Medical Records</mat-label>
+          <input matInput formControlName="medicalRecords" placeholder="TBD" />
+        </mat-form-field>
+      </div>
+      <div class="step-controls">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-flat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Step 3: Vaccination -->
+  <mat-step [stepControl]="vaccinationForm">
+    <form [formGroup]="vaccinationForm">
+      <div class="form-container">
+        <h3>Vaccination</h3>
+
+        <div formArrayName="vaccinations" class="vaccinations">
+          <div
+            *ngFor="let vac of vaccinations.controls; let i = index"
+            [formGroupName]="i"
+            class="vaccination-row"
+          >
+            <!-- Vaccine -->
+            <mat-form-field appearance="fill">
+              <mat-label>Vaccine</mat-label>
+              <mat-select formControlName="vaccine">
+                <!-- 🔹 You can fill in your actual vaccine list -->
+                <mat-option value="bcg">BCG</mat-option>
+                <mat-option value="hepb">Hepatitis B</mat-option>
+                <mat-option value="polio">Polio</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Dose -->
+            <mat-form-field appearance="fill">
+              <mat-label>Dose</mat-label>
+              <mat-select formControlName="dose">
+                <mat-option
+                  *ngFor="let d of ['1', '2', '3', '4', 'Booster-1', 'Booster-2', 'Booster-3']"
+                  [value]="d"
+                >
+                  {{ d }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Site of Vaccination -->
+            <mat-form-field appearance="fill">
+              <mat-label>Site</mat-label>
+              <mat-select formControlName="site">
+                <mat-option value="left-arm">Oral</mat-option>
+                <mat-option value="left-arm">Left Arm</mat-option>
+                <mat-option value="right-arm">Right Arm</mat-option>
+                <mat-option value="left-thigh">Left Thigh</mat-option>
+                <mat-option value="right-thigh">Right Thigh</mat-option>
+                <mat-option value="right-buttock">Right Button</mat-option>
+                <mat-option value="left-buttock">Left Button</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Brand -->
+            <mat-form-field appearance="fill">
+              <mat-label>Brand</mat-label>
+              <input matInput formControlName="brand" />
+            </mat-form-field>
+
+            <!-- Batch -->
+            <mat-form-field appearance="fill">
+              <mat-label>Batch No.</mat-label>
+              <input matInput formControlName="batch" />
+            </mat-form-field>
+
+            <!-- Remove button (only visible if multiple rows) -->
+            <button
+              *ngIf="vaccinations.length > 1"
+              mat-icon-button
+              color="warn"
+              (click)="removeVaccination(i)"
+            >
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+            <mat-divider></mat-divider>
+          </div>
+          
+        </div>
+
+        <!-- Add button -->
+        <button mat-stroked-button color="warn" (click)="addVaccination()">
+          Add new Vaccination
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+
+      <div class="step-controls">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-flat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Step 4: Symptoms -->
+  <mat-step [stepControl]="symptomsForm">
+    <form [formGroup]="symptomsForm">
+      <div class="form-container">
+        <h3>Symptoms</h3>
+
+        <!-- Multi-select dropdown -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Select Symptoms</mat-label>
+          <mat-select formControlName="symptoms" multiple>
+            <mat-option *ngFor="let s of commonSymptoms" [value]="s">{{ s }}</mat-option>
+          </mat-select>
+          <mat-hint>Most common symptoms</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Symptoms</mat-label>
+          <mat-chip-grid #chipGrid aria-label="Symptoms selection">
+            <mat-chip
+              class="symptom-chips"
+              *ngFor="let symptom of selectedSymptoms"
+              (removed)="removeSymptom(symptom)"
+            >
+              {{ symptom }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+            <input
+              placeholder="Add symptom..."
+              [matChipInputFor]="chipGrid"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="addSymptom($event)"
+            />
+          </mat-chip-grid>
+          <mat-hint>You can also type in a new symptom</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="step-controls">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-flat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Step 5: Consultation -->
+  <mat-step [stepControl]="consultationForm">
+    <form [formGroup]="consultationForm">
+      <div class="form-container">
+        <h3>Consultation</h3>
+        <mat-form-field appearance="fill">
+          <mat-label>Consultation Notes</mat-label>
+          <textarea matInput formControlName="notes"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="step-controls">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-flat-button matStepperNext [disabled]="!consultationForm.valid">Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Step 6: End -->
+  <mat-step label="Finish">
+    <div class="form-container">
+      <h3>Review and Save</h3>
+      <p>All data will be saved: growth, medical records, vaccination, symptoms, consultation.</p>
+    </div>
+    <div class="step-controls">
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="close()">Cancel</button>
+      <button mat-flat-button color="primary" (click)="save()">Save</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

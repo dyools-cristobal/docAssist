@@ -7,6 +7,7 @@ import { NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentService } from '../../../shared/appointment.service';
 import { ConfirmStartAppointment } from '../../../shared/confirm-start-appointment/confirm-start-appointment';
+import { Appointment } from '../../../shared/appointment/appointment';
 import { MatButtonModule } from '@angular/material/button';
 import { AddPatientGrowth } from '../patient-growth/add-patient-growth/add-patient-growth';
 import { NgChartsModule } from 'ng2-charts';
@@ -123,10 +124,20 @@ export class PatientDashboard implements OnInit {
       disableClose: true,
     });
 
+    
+
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.appointmentsService.updateStatus(appointmentID, 'in-progress').then(() => {
           console.log(`Appointment ${appointmentID} set to in-progress`);
+          const appointmentDialogRef = this.dialog.open(Appointment, {
+            data: {message: 'Appointment Flow'},
+            disableClose: true,
+            maxWidth: '90vw',
+            maxHeight: '90vh'
+            // panelClass: 'appointment-dialog-fullscreen'
+          });
         });
       } else {
         console.log('Doctor chose not to start the appointment.');
