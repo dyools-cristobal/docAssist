@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { AppointmentService } from '../../../shared/appointment.service';
+import { AppointmentService } from '../../../shared/appointments.service';
 import { ConfirmStartAppointment } from '../../../shared/confirm-start-appointment/confirm-start-appointment';
 import { Appointment } from '../../../shared/appointment/appointment';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +13,9 @@ import { AddPatientGrowth } from '../patient-growth/add-patient-growth/add-patie
 import { NgChartsModule } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
 import { normalGrowthMale, normalGrowthFemale } from '../../../shared/constants/growth';
+import { PatientPrescriptions } from '../patient-prescriptions/patient-prescriptions';
+import { AuthService } from '../../../core/auth.service';
+import { doc } from 'firebase/firestore';
 
 @Component({
   standalone: true,
@@ -94,7 +97,7 @@ export class PatientDashboard implements OnInit {
     },
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private authService: AuthService) {}
 
   ngOnInit() {
     this.patientID = this.route.snapshot.queryParamMap.get('patientID');
@@ -165,6 +168,27 @@ export class PatientDashboard implements OnInit {
         await this.patientsService.addGrowthRecord(this.patient.id, result);
         console.log('Growth record added successfully');
       }
+    });
+  }
+
+  addNewPrescription() {
+    const doctorId = this.authService.currentUser()?.uid;
+    const doctorName = this.authService.currentUser()?.displayName || 'Dr.';
+
+    if (!doctorId) {
+      console.error('No authenticated doctor found');
+      return;
+    }
+    const dialogRef = this.dialog.open(PatientPrescriptions, {
+      data: { 
+        patientId: `${this.patientID}`,
+        patientName: `${this.patient?.firstName} ${this.patient?.lastName}`,
+        appoinementId: `${this.appointmentID}`,
+        doctorId: `${doctorId}`,
+        doctorName: `${doctorName}` 
+      },
+      maxHeight: '90vh',
+      disableClose: false,
     });
   }
 

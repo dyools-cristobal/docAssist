@@ -1,0 +1,86 @@
+<div class="container">
+    <h2 mat-dialog-title>Add Prescription for {{ patientName }}</h2>
+<div mat-dialog-content>
+  <form [formGroup]="prescriptionForm" class="prescription-form">
+    <div formArrayName="prescriptions">
+      <div *ngFor="let presc of prescriptions.controls; let i = index" [formGroupName]="i" class="prescription-row">
+        <mat-form-field appearance="fill">
+          <mat-label>Medicine</mat-label>
+          <input matInput formControlName="medicineName" placeholder="Medicine name" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Dosage</mat-label>
+          <input matInput formControlName="dosage" placeholder="e.g., 250mg" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Frequency</mat-label>
+          <mat-select formControlName="frequency">
+            <mat-option *ngFor="let f of frequencyOptions" [value]="f">{{ f }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Duration</mat-label>
+          <mat-select formControlName="duration">
+            <mat-option *ngFor="let d of durationOptions" [value]="d">{{ d }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="notes-field">
+          <mat-label>Notes</mat-label>
+          <input matInput formControlName="notes" placeholder="Optional" />
+        </mat-form-field>
+
+        <button mat-icon-button color="warn" *ngIf="prescriptions.length > 1" (click)="removePrescription(i)">
+          <mat-icon>remove_circle_outline</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <button mat-stroked-button color="primary" class="add-btn" (click)="addPrescription()">
+      <mat-icon>add</mat-icon> Add Another
+    </button>
+  </form>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()">Save & Download</button>
+
+</div>
+
+</div>
+
+<!-- ...existing code... -->
+
+<div id="print-section" style="background-color: white; padding: 20px; color: black; position: absolute; top: -1000px;">
+  <div style="font-family: Arial, sans-serif;">
+    <h2 style="color: black; margin-bottom: 20px;">Prescription</h2>
+    <!-- <p style="color: black;"><strong>Date:</strong> {{ currentDate | date:'mediumDate' }}</p> -->
+    <p style="color: black;"><strong>Physician:</strong> {{ doctorName }}</p>
+    <p style="color: black;"><strong>Patient Name:</strong> {{ patientName }}</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+      <thead>
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; color: black;">Medicine</th>
+          <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; color: black;">Dosage</th>
+          <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; color: black;">Frequency</th>
+          <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; color: black;">Duration</th>
+          <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; color: black;">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of prescriptionForm.value.prescriptions">
+          <td style="border: 1px solid #ddd; padding: 8px; color: black;">{{ p.medicineName }}</td>
+          <td style="border: 1px solid #ddd; padding: 8px; color: black;">{{ p.dosage }}</td>
+          <td style="border: 1px solid #ddd; padding: 8px; color: black;">{{ p.frequency }}</td>
+          <td style="border: 1px solid #ddd; padding: 8px; color: black;">{{ p.duration }}</td>
+          <td style="border: 1px solid #ddd; padding: 8px; color: black;">{{ p.notes }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

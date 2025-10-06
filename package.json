@@ -35,6 +35,8 @@
     "chart.js": "^4.5.0",
     "chartjs-plugin-zoom": "^2.2.0",
     "firebase": "^11.10.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.3",
     "ng2-charts": "^4.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
