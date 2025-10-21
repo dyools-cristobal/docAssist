@@ -4,22 +4,20 @@
     <mat-label>Search Patients</mat-label>
       <input matInput [(ngModel)]="searchTerm" (keyup)="applyFilter()" placeholder="Type to search..." />
     </mat-form-field>
+      <button mat-fab color="primary" (click)="openAdd()"  matTooltip="Add New Patient" class="add-button">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>
 
 
-  <table mat-table [dataSource]="filteredPatients()" matSort class="mat-elevation-z8">
+  <table mat-table [dataSource]="filteredPatients()" matSort class="table">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
       <td mat-cell *matCellDef="let p">{{p.lastName}}, {{p.firstName}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="dob">
-      <th mat-header-cell *matHeaderCellDef>DOB</th>
-      <td mat-cell *matCellDef="let p">{{p.dob | date}}</td>
-    </ng-container>
-
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef></th>
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let p">
         <button mat-icon-button (click)="goToDashboard(p)" matTooltip="View Patient Record" class="open-button">
           <mat-icon>open_in_new</mat-icon>
@@ -34,6 +32,3 @@
     <tr mat-row *matRowDef="let row; columns: cols;"></tr>
   </table>
 
-  <button mat-fab color="primary" (click)="openAdd()" class="fab">
-    <mat-icon>add</mat-icon>
-  </button>

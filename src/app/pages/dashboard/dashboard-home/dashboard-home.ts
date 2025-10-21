@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { AsyncPipe, CommonModule, NgFor, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { PatientsListComponent } from '../../patients/patients-list';
 
 
 export interface Appointment {
@@ -24,7 +25,7 @@ export interface Appointment {
 
 @Component({
   selector: 'app-dashboard-home',
-  imports: [AsyncPipe, NgFor, NgIf, MatIconModule, MatButtonModule, CommonModule],
+  imports: [AsyncPipe, NgFor, NgIf, MatIconModule, MatButtonModule, CommonModule, PatientsListComponent],
   templateUrl: './dashboard-home.html',
   styleUrl: './dashboard-home.scss'
 })

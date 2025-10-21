@@ -1,29 +1,42 @@
-<div *ngIf="appointments$ | async as appointments">
-  @if(appointments.length > 1) {
-    <h2>You have {{ appointments.length }} Appointments today</h2>
-  }
-  @if(appointments.length === 1) {
-    <h2>You have 1 Appointment today</h2>
-  }
+<div *ngIf="appointments$ | async as appointments" class="dashboard-home">
+  <div class="appointments-section">
+    @if(appointments.length > 1) {
+    <div class="appointments">You have {{ appointments.length }} appointments today</div>
+    } @if(appointments.length === 1) {
+    <div class="appointments">You have 1 appointment today</div>
+    } @if(appointments.length === 0) {
+    <div class="appointments">You have no appointments today</div>
+    }
 
-  <div *ngFor="let appt of appointments" class="appt-card" [ngClass]="appt.patientGender === 'male' ? 'male-border' : 'female-border'">
-    <!-- Colored border based on gender -->
-  
+    <div
+      *ngFor="let appt of appointments"
+      class="appt-card"
+      [ngClass]="appt.patientGender === 'male' ? 'male-border' : 'female-border'"
+    >
+      <!-- Colored border based on gender -->
+      <div class="appt-info">
+        <div class="appt-time">{{ formatTime24to12(appt.time) }}</div>
+        <div class="appt-name">{{ appt.patientName }}</div>
+        <div class="appt-type">{{ appt.type }}, {{ appt.details }}</div>
+      </div>
 
-    <div class="appt-info">
-      <div class="appt-time">{{ formatTime24to12(appt.time) }}</div>
-      <div class="appt-name">{{ appt.patientName }}</div>
-      <div class="appt-type">{{ appt.type }}, {{ appt.details }}</div>
+      @if(appt.status === 'waiting') {
+      <div class="chip waiting-chip">Waiting</div>
+      } @if(appt.status === 'in-progress') {
+      <div class="chip in-progress-chip">In-Progress</div>
+      } @if(appt.status === 'done') {
+      <div class="chip done-chip">Done</div>
+      } @if(appt.status === 'cancelled') {
+      <div class="chip cancelled-chip">Cancelled</div>
+      }
+
+      <button mat-icon-button (click)="goToPatient(appt)">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
     </div>
-
-    @if(appt.status === 'waiting') {<div class=" chip waiting-chip">Waiting</div>}
-    @if(appt.status === 'in-progress') {<div class="chip in-progress-chip">In-Progress</div>}
-    @if(appt.status === 'done') {<div class="chip done-chip">Done</div>}
-    @if(appt.status === 'cancelled') {<div class="chip cancelled-chip">Cancelled</div>}
-    
-   
-    <button mat-icon-button (click)="goToPatient(appt)">
-      <mat-icon>arrow_forward</mat-icon>
-    </button>
+  </div>
+  <div class="patients">
+    <h3>Patients</h3>
+    <app-patients-list></app-patients-list>
   </div>
 </div>

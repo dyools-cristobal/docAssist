@@ -3,18 +3,16 @@
 // components according to the Material 3 design spec.
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
-@use '@angular/material' as mat;
-@use 'assets/styles/variables' as vars;
+@use '@angular/material'as mat;
+@use 'assets/styles/variables'as vars;
 
 html {
-  @include mat.theme((
-    color: (
-      primary: mat.$rose-palette,
-      tertiary: mat.$red-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.theme((color: (primary: mat.$rose-palette,
+        tertiary: mat.$red-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
 }
 
 body {
@@ -33,16 +31,27 @@ body {
   // Reset the user agent margin.
   margin: 0;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Calibri, 'Trebuchet MS', sans-serif, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Calibri, 'Trebuchet MS', sans-serif, "Helvetica Neue", sans-serif;
+}
 
 
 :root {
-  --mdc-theme-primary: #1976d2; /* Blue */
-  --mdc-theme-secondary: #e91e63; /* Pink */
-  --mdc-theme-error: #f44336; /* Red */
+  --mdc-theme-primary: #1976d2;
+  /* Blue */
+  --mdc-theme-secondary: #e91e63;
+  /* Pink */
+  --mdc-theme-error: #f44336;
+  /* Red */
 }
 
 
@@ -52,7 +61,6 @@ body {
 }
 
 .mat-mdc-list-item .mat-mdc-list-item-line {
-  color: rgba(127, 70, 131, 0.6); 
-  font-size: 0.7rem; 
+  color: rgba(127, 70, 131, 0.6);
+  font-size: 0.7rem;
 }
-

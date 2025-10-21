@@ -26,9 +26,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './patients-list.scss'
 })
 export class PatientsListComponent {
-  // private svc = inject(PatientsService);
-  private dialog = inject(MatDialog);
 
+  private dialog = inject(MatDialog);
+  
   patients = signal<Patient[]>([]);
   cols = ['name', 'actions'];
   searchTerm = '';
