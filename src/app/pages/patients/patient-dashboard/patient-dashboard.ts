@@ -195,6 +195,7 @@ export class PatientDashboard implements OnInit {
         clinics: clinics || []
       },
       maxHeight: '90vh',
+      maxWidth: '90vw',
       disableClose: false,
     });
   }
