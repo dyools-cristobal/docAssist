@@ -1,64 +1,89 @@
 <div class="container">
-    <h2 mat-dialog-title>Add Prescription for {{ patientName }}</h2>
-<div mat-dialog-content>
-  <form [formGroup]="prescriptionForm" class="prescription-form">
-    <div formArrayName="prescriptions">
-      <div *ngFor="let presc of prescriptions.controls; let i = index" [formGroupName]="i" class="prescription-row">
-        <mat-form-field appearance="fill">
-          <mat-label>Medicine</mat-label>
-          <input matInput formControlName="medicineName" placeholder="Medicine name" />
-        </mat-form-field>
+  <h2 mat-dialog-title>Add Prescription for {{ patientData.firstName }} </h2>
+  <div mat-dialog-content>
+    <form [formGroup]="prescriptionForm" class="prescription-form">
+      <div formArrayName="prescriptions">
+        <div
+          *ngFor="let presc of prescriptions.controls; let i = index"
+          [formGroupName]="i"
+          class="prescription-row"
+        >
+          <mat-form-field appearance="fill">
+            <mat-label>Medicine</mat-label>
+            <input matInput formControlName="medicineName" placeholder="Medicine name" />
+          </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Dosage</mat-label>
-          <input matInput formControlName="dosage" placeholder="e.g., 250mg" />
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Dosage</mat-label>
+            <input matInput formControlName="dosage" placeholder="e.g., 250mg" />
+          </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Frequency</mat-label>
-          <mat-select formControlName="frequency">
-            <mat-option *ngFor="let f of frequencyOptions" [value]="f">{{ f }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Frequency</mat-label>
+            <mat-select formControlName="frequency">
+              <mat-option *ngFor="let f of frequencyOptions" [value]="f">{{ f }}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Duration</mat-label>
-          <mat-select formControlName="duration">
-            <mat-option *ngFor="let d of durationOptions" [value]="d">{{ d }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Duration</mat-label>
+            <mat-select formControlName="duration">
+              <mat-option *ngFor="let d of durationOptions" [value]="d">{{ d }}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field appearance="fill" class="notes-field">
-          <mat-label>Notes</mat-label>
-          <input matInput formControlName="notes" placeholder="Optional" />
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Number</mat-label>
+            <input matInput formControlName="number" placeholder="e.g., 10 capsules/tablets" />
+          </mat-form-field>
 
-        <button mat-icon-button color="warn" *ngIf="prescriptions.length > 1" (click)="removePrescription(i)">
-          <mat-icon>remove_circle_outline</mat-icon>
-        </button>
+          <mat-form-field appearance="fill" class="notes-field">
+            <mat-label>Notes</mat-label>
+            <input matInput formControlName="notes" placeholder="Optional" />
+          </mat-form-field>
+
+          <button
+            mat-icon-button
+            color="warn"
+            *ngIf="prescriptions.length > 1"
+            (click)="removePrescription(i)"
+          >
+            <mat-icon>remove_circle_outline</mat-icon>
+          </button>
+        </div>
       </div>
-    </div>
 
-    <button mat-stroked-button color="primary" class="add-btn" (click)="addPrescription()">
-      <mat-icon>add</mat-icon> Add Another
-    </button>
-  </form>
+      <button mat-stroked-button color="primary" class="add-btn" (click)="addPrescription()">
+        <mat-icon>add</mat-icon> Add Another
+      </button>
+    </form>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-flat-button color="primary" (click)="save()">Save & Download</button>
+  </div>
 </div>
 
-<div mat-dialog-actions align="end">
-  <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-flat-button color="primary" (click)="save()">Save & Download</button>
-
-</div>
-
-</div>
-
-<!-- ...existing code... -->
-
-<div id="print-section" style="background-color: white; padding: 20px; color: black; position: absolute; top: -1000px;">
-  <div style="font-family: Arial, sans-serif;">
+<div
+  id="print-section"
+  style="
+    width: 210mm;
+    min-height: 297mm;
+    padding: 10mm;
+    margin: 0;
+    background-color: white;
+    color: black;
+    /* position: absolute;
+    top: -9999px; */
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+  "
+>
+  <!-- <div style="font-family: Arial, sans-serif;">
     <h2 style="color: black; margin-bottom: 20px;">Prescription</h2>
-    <!-- <p style="color: black;"><strong>Date:</strong> {{ currentDate | date:'mediumDate' }}</p> -->
+    <p style="color: black;"><strong>Date:</strong> {{ currentDate | date:'mediumDate' }}</p>
     <p style="color: black;"><strong>Physician:</strong> {{ doctorName }}</p>
     <p style="color: black;"><strong>Patient Name:</strong> {{ patientName }}</p>
 
@@ -82,5 +107,75 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </div> -->
+  <!-- Header -->
+  <body style="font-family: 'Arial', sans-serif; margin: 0; padding: 0; background: #fff">
+    <div
+      style="
+        background-color: #f7edf7;
+        text-align: center;
+        padding: 10px 0;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      "
+    >
+      <h2 style="margin: 0; font-size: 14px; color: #3e4b2c">Dr. {{ doctorName }}</h2>
+      <p style="margin: 0; font-size: 12px; color: #3e4b2c">Pediatrics</p>
+      <div style="margin: 0; font-size: 12px; color: #3e4b2c">
+        <div *ngFor="let clinic of clinics" style="font-size: 9px;">
+          {{ clinic.address }} | Tel: {{ clinic.phoneNumber }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Patient Info -->
+    <div style="margin-top: 25px; font-size: 12px">
+      <div style="display: flex; justify-content: space-between">
+        <div>
+          Patient’s name: <b>{{ patientData.firstName }} {{ patientData.lastName }}</b>
+        </div>
+        <div>
+          Age/Sex: <b>{{ patientAge }}/{{ patientData.gender }}</b>
+        </div>
+      </div>
+      <div style="margin-top: 10px">Address: {{patientData.address}}</div>
+      <div style="margin-top: 10px">
+        Date: <b>{{ currentDate | date : 'mediumDate' }}</b>
+      </div>
+    </div>
+
+    <!-- RX -->
+    <div style="font-size: 40px; color: #c0c0c0; margin-top: 40px; margin-left: 20px">℞</div>
+
+    <!-- Prescription body area -->
+    <div style="height: 170mm; margin-top: 20px; border: none; padding: 20px">
+      <div style="width: 100%; margin-top: 20px">
+        <div *ngFor="let p of prescriptionForm.value.prescriptions" style="margin-bottom: 12px ; display: flex; justify-content: space-between">
+          <div>
+            <div style="color: black; font-size: 12px; font-weight: bold">
+              {{ p.medicineName }} {{ p.dosage }} 
+            </div>
+            <div style="color: black; font-size: 12px;">
+              {{ p.frequency }} {{ p.duration }}
+            </div>
+            <div style="color: black; font-size: 12px;">{{ p.notes }}</div>
+          </div>
+          <div style="color: black">{{ p.number }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="display: flex">
+      <img src="assets/images/baby.png" alt="Giraffe" style="width: 50px" />
+      <div style="flex: 2; font-size: 11px; text-align: right; justify-content: center">
+        <p style="margin: 0; font-weight: bold">{{ doctorName }}</p>
+        <p style="margin: 0">License #: ______________</p>
+        <p style="margin: 0">PTR #: ______________</p>
+        <p style="margin: 0">S2 #: ______________</p>
+      </div>
+
+      <!-- Design Image -->
+    </div>
+  </body>
 </div>

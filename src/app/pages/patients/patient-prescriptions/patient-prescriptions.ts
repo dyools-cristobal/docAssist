@@ -11,6 +11,8 @@ import { PrescriptionsService } from '../../../shared/prescriptions.service';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { Patient } from '../../../shared/patients.service';
+import { Clinic } from '../../../core/auth.service';
 
 @Component({
   selector: 'app-patient-prescriptions',
@@ -30,29 +32,34 @@ import html2canvas from 'html2canvas';
 export class PatientPrescriptions {
   prescriptionForm: FormGroup;
   patientId: string;
-  patientName: string;
+  patientAge: string;
+  patientData: Patient;
   currentDate: Date = new Date();
   doctorId: string;
   doctorName: string = 'Dr.';
   appointmentId: string;
+  clinics: Clinic[];
 
   // Dropdown options
-  frequencyOptions = ['Once daily', 'Twice daily', 'Thrice daily', 'As needed'];
-  durationOptions = ['3 days', '5 days', '7 days', '10 days', '2 weeks'];
+  frequencyOptions = ['Once a day', 'Twice a day', 'Three times a day', 'As needed'];
+  durationOptions = ['for 3 days', 'for 5 days', 'for 7 days', 'for 10 days', 'for 2 weeks', 'for 1 month'];
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<PatientPrescriptions>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { patientId: string; patientName?: string; appointmentId?: string; doctorId?: string; doctorName?: string },
+    public data: { patientData: Patient; patientId: string; patientName?: string;  patientAge: string;  appointmentId?: string; doctorId?: string; doctorName?: string; doctorData: any, clinics: Clinic[] },
     private prescriptionsService: PrescriptionsService
   ) {
+
     // ✅ Capture the passed data here
     this.patientId = this.data.patientId;
-    this.patientName = this.data.patientName || 'Unknown Patient';
+    this.patientAge = this.data.patientAge || '0';
     this.doctorId = this.data.doctorId || '';
-    this.doctorName = this.data.doctorName || 'Dr.';
+    this.doctorName = this.data.doctorData.displayName || 'Dr.';
     this.appointmentId = this.data.appointmentId || '';
+    this.patientData = this.data.patientData;
+    this.clinics = this.data.clinics;
 
     // ✅ Initialize form
     this.prescriptionForm = this.fb.group({
@@ -68,8 +75,9 @@ export class PatientPrescriptions {
     return this.fb.group({
       medicineName: ['', Validators.required],
       dosage: ['', Validators.required],
-      frequency: ['', Validators.required],
-      duration: ['', Validators.required],
+      frequency: [''],
+      duration: [''],
+      number: [''],
       notes: [''],
     });
   }

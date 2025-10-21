@@ -174,6 +174,8 @@ export class PatientDashboard implements OnInit {
   addNewPrescription() {
     const doctorId = this.authService.currentUser()?.uid;
     const doctorName = this.authService.currentUser()?.displayName || 'Dr.';
+    const doctorData = this.authService.currentUser();
+    const clinics = this.authService.clinic();
 
     if (!doctorId) {
       console.error('No authenticated doctor found');
@@ -183,9 +185,14 @@ export class PatientDashboard implements OnInit {
       data: { 
         patientId: `${this.patientID}`,
         patientName: `${this.patient?.firstName} ${this.patient?.lastName}`,
+
+        patientAge: `${this.getAge(this.patient?.dob)}`,
+        patientData: this.patient,
         appoinementId: `${this.appointmentID}`,
         doctorId: `${doctorId}`,
-        doctorName: `${doctorName}` 
+        doctorName: `${doctorName}`,
+        doctorData: doctorData,
+        clinics: clinics || []
       },
       maxHeight: '90vh',
       disableClose: false,
@@ -206,17 +213,32 @@ export class PatientDashboard implements OnInit {
     this.router.navigate(['/patient-growth']);
   }
 
-  getAge(dob: any): number {
-    if (!dob) return 0;
-    const birthDate = dob.toDate ? dob.toDate() : new Date(dob);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
+  getAge(dob: any): string {
+  if (!dob) return '0';
+  
+  const birthDate = dob.toDate ? dob.toDate() : new Date(dob);
+  const today = new Date();
+  
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  const dayDiff = today.getDate() - birthDate.getDate();
+
+  // Adjust for upcoming birthdays
+  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+    age--;
   }
+
+  // If less than 1 year old, calculate months instead
+  if (age <= 0) {
+    let months = (today.getFullYear() - birthDate.getFullYear()) * 12 + monthDiff;
+    if (dayDiff < 0) months--; // if not yet reached current month's day
+    if (months < 0) months = 0;
+    return `${months} month${months !== 1 ? 's' : ''}`;
+  }
+
+  return age.toString();
+}
+
 
   // Growth Charts
   private setupCharts() {
