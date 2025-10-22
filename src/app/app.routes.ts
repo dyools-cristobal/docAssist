@@ -13,6 +13,7 @@ export const routes: Routes = [
   { path: 'patient-history',  canActivate: [authGuard], loadComponent: ()   => import('./pages/patients/patient-history/patient-history').then(m => m.PatientHistory) },
   { path: 'patient-growth/:id',  canActivate: [authGuard], loadComponent: ()   => import('./pages/patients/patient-growth/patient-growth').then(m => m.PatientGrowth) },
   { path: 'patient-calendar/:id',  canActivate: [authGuard], loadComponent: ()   => import('./pages/patients/patient-calendar/patient-calendar').then(m => m.PatientCalendar) },
+  { path: 'user-profile',  canActivate: [authGuard], loadComponent: ()   => import('./pages/user-profile/user-profile').then(m => m.UserProfile) },
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
   { path: '**', redirectTo: 'dashboard' },
  

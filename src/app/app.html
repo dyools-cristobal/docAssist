@@ -5,15 +5,19 @@
       <img src="assets/images/doc-assist-logo.png" alt="" class="logo">
     </span>
     <span class="spacer"></span>
-    <!-- <button mat-button (click)="handleLogout()">Logout</button> -->
     <button matIconButton [matMenuTriggerFor]="menu" aria-label="Menu">
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="goToProfile()">
+        <mat-icon>account_circle</mat-icon>
+        <span>Account</span>
+      </button>
       <button mat-menu-item (click)="handleLogout()">
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
       </button>
+      
     </mat-menu>
   </mat-toolbar-row>
   <mat-toolbar-row>

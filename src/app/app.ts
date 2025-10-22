@@ -35,6 +35,10 @@ export class AppComponent {
     await this.auth.logout();
     this.route.navigate(['/login']);
   }
+  async goToProfile() {
+    this.route.navigate(['/user-profile']);
+  }
+  
 
   get userName(): string | null {
     return this.auth.currentUser()?.displayName || this.auth.currentUser()?.email || null;

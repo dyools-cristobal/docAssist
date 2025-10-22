@@ -46,7 +46,7 @@ export class RegisterUser {
         role,
         specialty: role === 'doctor' ? specialty : null,
         doctorIds: role === 'assistant' ? [] : null,
-        assistantIds: role === 'doctor' ? [] : null,
+        assistantIds: role === 'doctor' ? [] : null,  
         createdAt: new Date(),
         updatedAt: new Date()
       });

@@ -1,0 +1,30 @@
+<form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="profile-form">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Full Name</mat-label>
+    <input matInput type="text" formControlName="name" />
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Specialty</mat-label>
+    <input matInput type="text" formControlName="specialty" />
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>License Number</mat-label>
+    <input matInput type="text" formControlName="licenseNumber" />
+  </mat-form-field>
+<mat-form-field appearance="outline" class="full-width">
+    <mat-label>PTR Number</mat-label>
+    <input matInput type="text" formControlName="PTRNumber" />
+  </mat-form-field>
+<mat-form-field appearance="outline" class="full-width">
+    <mat-label>S2 Number</mat-label>
+    <input matInput type="text" formControlName="S2Number" />
+  </mat-form-field>
+
+
+  <button mat-flat-button type="submit" [disabled]="isSaving">
+    {{ isSaving ? 'Saving...' : 'Update Profile' }}
+  </button>
+
+  <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</form>
