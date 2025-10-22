@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, effect } from '@angular/core';
 import {
   Auth,
   user,
@@ -6,7 +6,14 @@ import {
   signOut,
   UserCredential,
 } from '@angular/fire/auth';
-import { Firestore, doc, setDoc, getDoc, collection, getDocs } from '@angular/fire/firestore';
+import {
+  Firestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  getDocs,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -32,26 +39,43 @@ export class AuthService {
   user$: Observable<import('firebase/auth').User | null> = user(this.auth);
   currentUser = toSignal(user(this.auth));
 
-  // Add credential signal
   private credentialSignal = signal<UserCredential | null>(null);
   credential = this.credentialSignal.asReadonly();
 
-  private userDocSignal = signal<any | null>(null);
+  private userDocSignal = signal<any | null>(this.loadUserDocFromStorage());
   userDoc = this.userDocSignal.asReadonly();
 
-  // Update the clinic signal type to handle array
-  private clinicSignal = signal<Clinic[] | null>(null);
+  private clinicSignal = signal<Clinic[] | null>(this.loadClinicsFromStorage());
   clinic = this.clinicSignal.asReadonly();
+
+  constructor() {
+    // Watch for changes and save to localStorage automatically
+    effect(() => {
+      const userDoc = this.userDocSignal();
+      if (userDoc) {
+        localStorage.setItem('userDoc', JSON.stringify(userDoc));
+      } else {
+        localStorage.removeItem('userDoc');
+      }
+    });
+
+    effect(() => {
+      const clinics = this.clinicSignal();
+      if (clinics) {
+        localStorage.setItem('clinics', JSON.stringify(clinics));
+      } else {
+        localStorage.removeItem('clinics');
+      }
+    });
+  }
 
   async login(email: string, password: string) {
     const credential = await signInWithEmailAndPassword(this.auth, email, password);
     this.credentialSignal.set(credential);
 
-    // Get additional user data from Firestore
     const userDoc = await this.getUserData(credential.user.uid);
     this.userDocSignal.set(userDoc || null);
 
-    // Get and set clinic data
     const clinicData = await this.getUserClinic(credential.user.uid);
     this.clinicSignal.set(clinicData || null);
 
@@ -60,7 +84,13 @@ export class AuthService {
 
   logout() {
     this.credentialSignal.set(null);
+    this.userDocSignal.set(null);
     this.clinicSignal.set(null);
+
+    // Clear storage
+    localStorage.removeItem('userDoc');
+    localStorage.removeItem('clinics');
+
     return signOut(this.auth);
   }
 
@@ -74,7 +104,6 @@ export class AuthService {
   }
 
   async getUserData(userId: string) {
-
     const userRef = doc(this.firestore, `users/${userId}`);
     const userSnap = await getDoc(userRef);
 
@@ -85,6 +114,7 @@ export class AuthService {
 
     return { id: userSnap.id, ...userSnap.data() };
   }
+
   async getUserClinic(userId: string) {
     console.log('Fetching clinics for user:', userId);
     const clinicsRef = collection(this.firestore, `users/${userId}/clinics`);
@@ -95,7 +125,6 @@ export class AuthService {
       return undefined;
     }
 
-    // Map all clinic documents to Clinic objects
     const clinics = clinicsSnap.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
@@ -103,5 +132,15 @@ export class AuthService {
 
     console.log('Clinics data:', clinics);
     return clinics;
+  }
+
+  private loadUserDocFromStorage() {
+    const stored = localStorage.getItem('userDoc');
+    return stored ? JSON.parse(stored) : null;
+  }
+
+  private loadClinicsFromStorage() {
+    const stored = localStorage.getItem('clinics');
+    return stored ? JSON.parse(stored) : null;
   }
 }

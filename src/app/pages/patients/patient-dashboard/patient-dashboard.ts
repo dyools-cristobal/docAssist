@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { PatientsService, Patient } from '../../../shared/patients.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -97,7 +97,14 @@ export class PatientDashboard implements OnInit {
     },
   };
 
-  constructor(private router: Router,private authService: AuthService) {}
+  constructor(private router: Router,private authService: AuthService) {
+    effect(() => {
+      const docLicenses = this.authService.userDoc();
+      if (docLicenses) {
+        console.log('UserDoc loaded:', docLicenses);
+      }
+    });
+  }
 
   ngOnInit() {
     this.patientID = this.route.snapshot.queryParamMap.get('patientID');
@@ -175,6 +182,7 @@ export class PatientDashboard implements OnInit {
     const doctorId = this.authService.currentUser()?.uid;
     const doctorName = this.authService.currentUser()?.displayName || 'Dr.';
     const doctorData = this.authService.currentUser();
+    const docLicenses = this.authService.userDoc();
     const clinics = this.authService.clinic();
 
     if (!doctorId) {
@@ -192,6 +200,7 @@ export class PatientDashboard implements OnInit {
         doctorId: `${doctorId}`,
         doctorName: `${doctorName}`,
         doctorData: doctorData,
+        docLicenses: docLicenses,
         clinics: clinics || []
       },
       maxHeight: '90vh',

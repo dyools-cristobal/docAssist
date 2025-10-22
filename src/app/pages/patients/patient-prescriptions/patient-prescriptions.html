@@ -81,33 +81,7 @@
     box-sizing: border-box;
   "
 >
-  <!-- <div style="font-family: Arial, sans-serif;">
-    <h2 style="color: black; margin-bottom: 20px;">Prescription</h2>
-    <p style="color: black;"><strong>Date:</strong> {{ currentDate | date:'mediumDate' }}</p>
-    <p style="color: black;"><strong>Physician:</strong> {{ doctorName }}</p>
-    <p style="color: black;"><strong>Patient Name:</strong> {{ patientName }}</p>
-
-    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-      <thead>
-        <tr>
-          <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; color: black;">Medicine</th>
-          <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; color: black;">Dosage</th>
-          <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; color: black;">Frequency</th>
-          <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; color: black;">Duration</th>
-          <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; color: black;">Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let p of prescriptionForm.value.prescriptions">
-          <td style="border: 1px solid #ddd; padding: 8px; color: black;">{{ p.medicineName }}</td>
-          <td style="border: 1px solid #ddd; padding: 8px; color: black;">{{ p.dosage }}</td>
-          <td style="border: 1px solid #ddd; padding: 8px; color: black;">{{ p.frequency }}</td>
-          <td style="border: 1px solid #ddd; padding: 8px; color: black;">{{ p.duration }}</td>
-          <td style="border: 1px solid #ddd; padding: 8px; color: black;">{{ p.notes }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
+  
   <!-- Header -->
   <body style="font-family: 'Arial', sans-serif; margin: 0; padding: 0; background: #fff">
     <div
@@ -121,8 +95,8 @@
     >
       <h2 style="margin: 0; font-size: 14px; color: #3e4b2c">Dr. {{ doctorName }}</h2>
       <p style="margin: 0; font-size: 12px; color: #3e4b2c">Pediatrics</p>
-      <div style="margin: 0; font-size: 12px; color: #3e4b2c">
-        <div *ngFor="let clinic of clinics" style="font-size: 9px;">
+      <div style="margin: 0; font-size: 12px; color: #3e4b2c; display: flex; justify-content: center; gap: 10px;">
+        <div *ngFor="let clinic of clinics" style="font-size: 9px; max-width: 30%;">
           {{ clinic.address }} | Tel: {{ clinic.phoneNumber }}
         </div>
       </div>
@@ -131,24 +105,24 @@
     <!-- Patient Info -->
     <div style="margin-top: 25px; font-size: 12px">
       <div style="display: flex; justify-content: space-between">
-        <div>
+        <div style="font-size: 13px;">
           Patient’s name: <b>{{ patientData.firstName }} {{ patientData.lastName }}</b>
         </div>
         <div>
           Age/Sex: <b>{{ patientAge }}/{{ patientData.gender }}</b>
         </div>
       </div>
-      <div style="margin-top: 10px">Address: {{patientData.address}}</div>
-      <div style="margin-top: 10px">
+      <div style=" font-size: 11px;">Address: {{patientData.address}}</div>
+      <div style="font-size: 10px; font-size: 11px">
         Date: <b>{{ currentDate | date : 'mediumDate' }}</b>
       </div>
     </div>
 
     <!-- RX -->
-    <div style="font-size: 40px; color: #c0c0c0; margin-top: 40px; margin-left: 20px">℞</div>
+    <div style="font-size: 40px; color: #c0c0c0; margin-top: 30px; margin-left: 10px">℞</div>
 
     <!-- Prescription body area -->
-    <div style="height: 170mm; margin-top: 20px; border: none; padding: 20px">
+    <div style="height: 180mm; margin-top: 20px; border: none; padding: 20px">
       <div style="width: 100%; margin-top: 20px">
         <div *ngFor="let p of prescriptionForm.value.prescriptions" style="margin-bottom: 12px ; display: flex; justify-content: space-between">
           <div>
@@ -169,10 +143,10 @@
     <div style="display: flex">
       <img src="assets/images/baby.png" alt="Giraffe" style="width: 50px" />
       <div style="flex: 2; font-size: 11px; text-align: right; justify-content: center">
-        <p style="margin: 0; font-weight: bold">{{ doctorName }}</p>
-        <p style="margin: 0">License #: ______________</p>
-        <p style="margin: 0">PTR #: ______________</p>
-        <p style="margin: 0">S2 #: ______________</p>
+        <p style="margin: 0; font-weight: bold">Dr. {{ doctorName }}</p>
+        <p style="margin: 0">License #: {{docLicenses?.licenseNumber}}</p>
+        <p style="margin: 0">PTR #: {{docLicenses?.PTRNumber}}</p>
+        <p style="margin: 0">S2 #: {{docLicenses?.S2Number}}</p>
       </div>
 
       <!-- Design Image -->

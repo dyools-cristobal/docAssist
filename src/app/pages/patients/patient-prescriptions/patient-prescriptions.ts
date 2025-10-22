@@ -37,6 +37,7 @@ export class PatientPrescriptions {
   currentDate: Date = new Date();
   doctorId: string;
   doctorName: string = 'Dr.';
+  docLicenses: any;
   appointmentId: string;
   clinics: Clinic[];
 
@@ -48,7 +49,7 @@ export class PatientPrescriptions {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<PatientPrescriptions>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { patientData: Patient; patientId: string; patientName?: string;  patientAge: string;  appointmentId?: string; doctorId?: string; doctorName?: string; doctorData: any, clinics: Clinic[] },
+    public data: { patientData: Patient; patientId: string; patientName?: string;  patientAge: string;  appointmentId?: string; doctorId?: string; doctorName?: string; doctorData: any, docLicenses: any; clinics: Clinic[] },
     private prescriptionsService: PrescriptionsService
   ) {
 
@@ -60,7 +61,8 @@ export class PatientPrescriptions {
     this.appointmentId = this.data.appointmentId || '';
     this.patientData = this.data.patientData;
     this.clinics = this.data.clinics;
-
+    this.docLicenses = this.data.docLicenses;
+    console.log(this.docLicenses)
     // ✅ Initialize form
     this.prescriptionForm = this.fb.group({
       prescriptions: this.fb.array([this.createPrescriptionRow()]),
