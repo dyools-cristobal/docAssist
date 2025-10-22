@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,7 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   standalone: true,
   selector: 'app-patients-list',
-  imports: [MatTableModule, MatIconModule, MatButtonModule, MatIconModule, MatDialogModule, DatePipe, FormsModule, MatFormFieldModule, MatInputModule, MatSortModule, MatTooltipModule],
+  imports: [MatTableModule, MatIconModule, MatButtonModule, MatIconModule, MatDialogModule, FormsModule, MatFormFieldModule, MatInputModule, MatSortModule, MatTooltipModule],
   templateUrl: './patients-list.html',
   styleUrl: './patients-list.scss'
 })

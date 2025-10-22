@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
-import { CalendarComponent } from "../calendar/calendar";
+// import { CalendarComponent } from "../calendar/calendar";
 import { DashboardHome } from './dashboard-home/dashboard-home';
-import { PatientsListComponent } from "../patients/patients-list";
+// import { PatientsListComponent } from "../patients/patients-list";
 
 @Component({
   standalone: true,
   selector: 'app-dashboard',
-  imports: [MatTabsModule, RouterOutlet, CalendarComponent, PatientsListComponent, DashboardHome],
+  imports: [MatTabsModule, RouterOutlet, DashboardHome],
   templateUrl: './dashboard.html',
   styles: [`
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding:16px}
